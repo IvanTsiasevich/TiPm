@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "4/fQBUP1ss3rqBx2qMkIKF42EG+KTeI1IQqk2VNrK59ZiIpx4Pi4BPeXHEtwCWfYA9mA+zovQEP3LxjzOdcDLQ==",
+  "dgSpecHash": "i4PQ5/ikD5Nl4NNezTvU0uJlYoUIuWyf2wvRvkNI4gXBcsRcut23EQHHLHnzAeBMO1FeMih0ndxXG2tUUWpfoQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\DzedPC\\Desktop\\Project\\TiPmProject\\Ti.Pm.Web\\Ti.Pm.Web.csproj",
+  "projectFilePath": "C:\\Users\\DzedPC\\Desktop\\TiPm\\TiPmProject\\Ti.Pm.Web\\Ti.Pm.Web.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\DzedPC\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\DzedPC\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

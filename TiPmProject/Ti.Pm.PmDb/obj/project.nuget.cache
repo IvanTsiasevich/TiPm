@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "mIu5GxSLe39GCXSNvYAW40PEXQCpiVzOIgLcUxzLj6Bf6+JscucGjolnKqWCXjfyFyTePP1P6MDXUyypcMa05g==",
+  "dgSpecHash": "Jyvqccy9dSLS4sK+xefOqkmmZPDaMIN5SQ4UgSGxmpiAwv+yyMdmePUZXFhrQqqFK4NcqRGGH+g3SoPsK2o7ig==",
   "success": true,
-  "projectFilePath": "C:\\Users\\DzedPC\\Desktop\\Project\\TiPmProject\\Ti.Pm.PmDb\\Ti.Pm.PmDb.csproj",
+  "projectFilePath": "C:\\Users\\DzedPC\\Desktop\\TiPm\\TiPmProject\\Ti.Pm.PmDb\\Ti.Pm.PmDb.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\DzedPC\\.nuget\\packages\\microsoft.entityframeworkcore\\7.0.11\\microsoft.entityframeworkcore.7.0.11.nupkg.sha512",
     "C:\\Users\\DzedPC\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\7.0.11\\microsoft.entityframeworkcore.abstractions.7.0.11.nupkg.sha512",

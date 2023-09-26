@@ -21,7 +21,7 @@ namespace Ti.Pm.Web.Data.Service
             return await Task.FromResult(result);
         }
 
-        private ProjectPmVieweModel Convert(ProjectPm model)
+        private static ProjectPmVieweModel Convert(ProjectPm model)
         {
             var item = new ProjectPmVieweModel(model);
             return item;

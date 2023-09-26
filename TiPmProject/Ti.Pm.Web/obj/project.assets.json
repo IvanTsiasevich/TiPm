@@ -3059,11 +3059,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\DzedPC\\Desktop\\Project\\TiPmProject\\Ti.Pm.Web\\Ti.Pm.Web.csproj",
+      "projectUniqueName": "C:\\Users\\DzedPC\\Desktop\\TiPm\\TiPmProject\\Ti.Pm.Web\\Ti.Pm.Web.csproj",
       "projectName": "Ti.Pm.Web",
-      "projectPath": "C:\\Users\\DzedPC\\Desktop\\Project\\TiPmProject\\Ti.Pm.Web\\Ti.Pm.Web.csproj",
+      "projectPath": "C:\\Users\\DzedPC\\Desktop\\TiPm\\TiPmProject\\Ti.Pm.Web\\Ti.Pm.Web.csproj",
       "packagesPath": "C:\\Users\\DzedPC\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\DzedPC\\Desktop\\Project\\TiPmProject\\Ti.Pm.Web\\obj\\",
+      "outputPath": "C:\\Users\\DzedPC\\Desktop\\TiPm\\TiPmProject\\Ti.Pm.Web\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\DzedPC\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -3080,8 +3080,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "C:\\Users\\DzedPC\\Desktop\\Project\\TiPmProject\\Ti.Pm.PmDb\\Ti.Pm.PmDb.csproj": {
-              "projectPath": "C:\\Users\\DzedPC\\Desktop\\Project\\TiPmProject\\Ti.Pm.PmDb\\Ti.Pm.PmDb.csproj"
+            "C:\\Users\\DzedPC\\Desktop\\TiPm\\TiPmProject\\Ti.Pm.PmDb\\Ti.Pm.PmDb.csproj": {
+              "projectPath": "C:\\Users\\DzedPC\\Desktop\\TiPm\\TiPmProject\\Ti.Pm.PmDb\\Ti.Pm.PmDb.csproj"
             }
           }
         }

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\DzedPC\\Desktop\\Project\\TiPmProject\\Ti.Pm.PmDb\\Ti.Pm.PmDb.csproj": {}
+    "C:\\Users\\DzedPC\\Desktop\\TiPm\\TiPmProject\\Ti.Pm.PmDb\\Ti.Pm.PmDb.csproj": {}
   },
   "projects": {
-    "C:\\Users\\DzedPC\\Desktop\\Project\\TiPmProject\\Ti.Pm.PmDb\\Ti.Pm.PmDb.csproj": {
+    "C:\\Users\\DzedPC\\Desktop\\TiPm\\TiPmProject\\Ti.Pm.PmDb\\Ti.Pm.PmDb.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\DzedPC\\Desktop\\Project\\TiPmProject\\Ti.Pm.PmDb\\Ti.Pm.PmDb.csproj",
+        "projectUniqueName": "C:\\Users\\DzedPC\\Desktop\\TiPm\\TiPmProject\\Ti.Pm.PmDb\\Ti.Pm.PmDb.csproj",
         "projectName": "Ti.Pm.PmDb",
-        "projectPath": "C:\\Users\\DzedPC\\Desktop\\Project\\TiPmProject\\Ti.Pm.PmDb\\Ti.Pm.PmDb.csproj",
+        "projectPath": "C:\\Users\\DzedPC\\Desktop\\TiPm\\TiPmProject\\Ti.Pm.PmDb\\Ti.Pm.PmDb.csproj",
         "packagesPath": "C:\\Users\\DzedPC\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\DzedPC\\Desktop\\Project\\TiPmProject\\Ti.Pm.PmDb\\obj\\",
+        "outputPath": "C:\\Users\\DzedPC\\Desktop\\TiPm\\TiPmProject\\Ti.Pm.PmDb\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\DzedPC\\AppData\\Roaming\\NuGet\\NuGet.Config",

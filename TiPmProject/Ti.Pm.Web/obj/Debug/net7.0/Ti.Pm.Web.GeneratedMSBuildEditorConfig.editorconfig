@@ -9,97 +9,97 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Ti.Pm.Web
 build_property.RootNamespace = Ti.Pm.Web
-build_property.ProjectDir = C:\Users\DzedPC\Desktop\Project\TiPmProject\Ti.Pm.Web\
+build_property.ProjectDir = C:\Users\DzedPC\Desktop\TiPm\TiPmProject\Ti.Pm.Web\
 build_property.RazorLangVersion = 7.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\DzedPC\Desktop\Project\TiPmProject\Ti.Pm.Web
+build_property.MSBuildProjectDirectory = C:\Users\DzedPC\Desktop\TiPm\TiPmProject\Ti.Pm.Web
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/DzedPC/Desktop/Project/TiPmProject/Ti.Pm.Web/App.razor]
+[C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/App.razor]
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DzedPC/Desktop/Project/TiPmProject/Ti.Pm.Web/Pages/ErrorGenerator/ErrorGeneratorPage.razor]
+[C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Pages/ErrorGenerator/ErrorGeneratorPage.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3JHZW5lcmF0b3JcRXJyb3JHZW5lcmF0b3JQYWdlLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DzedPC/Desktop/Project/TiPmProject/Ti.Pm.Web/Pages/Index.razor]
+[C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Pages/Index.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DzedPC/Desktop/Project/TiPmProject/Ti.Pm.Web/Pages/KanbanBoard/KanbanBoard.razor]
+[C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Pages/KanbanBoard/KanbanBoard.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcS2FuYmFuQm9hcmRcS2FuYmFuQm9hcmQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DzedPC/Desktop/Project/TiPmProject/Ti.Pm.Web/Pages/Projects/Edit/EditProjectPm.razor]
+[C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Pages/Projects/Edit/EditProjectPm.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvamVjdHNcRWRpdFxFZGl0UHJvamVjdFBtLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DzedPC/Desktop/Project/TiPmProject/Ti.Pm.Web/Pages/Projects/ProjectsPm.razor]
+[C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Pages/Projects/ProjectsPm.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvamVjdHNcUHJvamVjdHNQbS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DzedPC/Desktop/Project/TiPmProject/Ti.Pm.Web/Pages/Status/Edit/EditStatusPm.razor]
+[C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Pages/Status/Edit/EditStatusPm.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3RhdHVzXEVkaXRcRWRpdFN0YXR1c1BtLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DzedPC/Desktop/Project/TiPmProject/Ti.Pm.Web/Pages/Status/Status.razor]
+[C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Pages/Status/Status.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3RhdHVzXFN0YXR1cy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DzedPC/Desktop/Project/TiPmProject/Ti.Pm.Web/Pages/System/SystemPm.razor]
+[C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Pages/System/SystemPm.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3lzdGVtXFN5c3RlbVBtLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DzedPC/Desktop/Project/TiPmProject/Ti.Pm.Web/Pages/Tasks/Edit/EditTaskPm.razor]
+[C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Pages/Tasks/Edit/EditTaskPm.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGFza3NcRWRpdFxFZGl0VGFza1BtLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DzedPC/Desktop/Project/TiPmProject/Ti.Pm.Web/Pages/Tasks/TasksPm.razor]
+[C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Pages/Tasks/TasksPm.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGFza3NcVGFza3NQbS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DzedPC/Desktop/Project/TiPmProject/Ti.Pm.Web/Pages/TaskType/Edit/EditTaskTypePm.razor]
+[C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Pages/TaskType/Edit/EditTaskTypePm.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGFza1R5cGVcRWRpdFxFZGl0VGFza1R5cGVQbS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DzedPC/Desktop/Project/TiPmProject/Ti.Pm.Web/Pages/TaskType/TaskType.razor]
+[C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Pages/TaskType/TaskType.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGFza1R5cGVcVGFza1R5cGUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DzedPC/Desktop/Project/TiPmProject/Ti.Pm.Web/Shared/DeleteError.razor]
+[C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Shared/DeleteError.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXERlbGV0ZUVycm9yLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DzedPC/Desktop/Project/TiPmProject/Ti.Pm.Web/Shared/DeleteModal.razor]
+[C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Shared/DeleteModal.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXERlbGV0ZU1vZGFsLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DzedPC/Desktop/Project/TiPmProject/Ti.Pm.Web/Shared/SortItem.razor]
+[C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Shared/SortItem.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFNvcnRJdGVtLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DzedPC/Desktop/Project/TiPmProject/Ti.Pm.Web/Shared/SurveyPrompt.razor]
+[C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Shared/SurveyPrompt.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cnZleVByb21wdC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DzedPC/Desktop/Project/TiPmProject/Ti.Pm.Web/_Imports.razor]
+[C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DzedPC/Desktop/Project/TiPmProject/Ti.Pm.Web/Shared/MainLayout.razor]
+[C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Shared/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-ph4uo8yt43
 
-[C:/Users/DzedPC/Desktop/Project/TiPmProject/Ti.Pm.Web/Shared/NavMenu.razor]
+[C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Shared/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-o49tmmlegb
 
-[C:/Users/DzedPC/Desktop/Project/TiPmProject/Ti.Pm.Web/Pages/Error.cshtml]
+[C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DzedPC/Desktop/Project/TiPmProject/Ti.Pm.Web/Pages/_Host.cshtml]
+[C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Pages/_Host.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0hvc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
