@@ -1,0 +1,63 @@
+﻿@page "/Tasks"
+@inherits TasksPmViewe
+
+<div class="d-flex justify-content-between">
+    <h2>Tasks</h2>
+    <div class="d-flex" style="justify-content: flex-end">
+        <input style="margin-left:10px; border-width:1px" type="text" class="form-control-sm" placeholder="Search..." @bind-value="@FilterText" @bind-value:event="oninput" />
+        <button class="btn" @onclick="()=>ClearSearch()"><i class="fa fa-close"></i></button>
+    </div>
+</div>
+<MudButton Variant="Variant.Outlined" style="margin-bottom:14px" @onclick="AddItemDialog">Add</MudButton>
+<MudTable Items="@VieweModels" SortLabel="Sort" FixedHeader="true" Height="" Style="width: 100%" Class="mud-table-custom">
+    <HeaderContent>
+        <MudTh>
+            <MudTableSortLabel SortBy="new Func<Data.ViewModel.TaskPmVieweModel, object>(x=>x.TaskId)">
+                Id
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortBy="new Func<Data.ViewModel.TaskPmVieweModel, object>(x=>x.Title)">
+                Title
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortBy="new Func<Data.ViewModel.TaskPmVieweModel, object>(x=>x.Description)">
+                Description
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortBy="new Func<Data.ViewModel.TaskPmVieweModel, object>(x=>x.ProjectId)">
+                Project
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortBy="new Func<Data.ViewModel.TaskPmVieweModel, object>(x=>x.StatusId)">
+                Status
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortBy="new Func<Data.ViewModel.TaskPmVieweModel, object>(x=>x.TaskTypeId)">
+                Task type
+            </MudTableSortLabel>
+        </MudTh>       
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate Context="item">
+        <MudTd DataLabel="TaskId" Style="width: 5%">@item.TaskId</MudTd>
+        <MudTd DataLabel="Title" Style="width: 10%">@item.Title</MudTd>
+        <MudTd DataLabel="Description" Style="width: 35%">@item.Description</MudTd>
+        <MudTd DataLabel="ProjectId" Style="width: 10%">@ProjectPmVieweModels.FirstOrDefault(x=>x.ProjectId ==item.ProjectId).Title</MudTd>
+        <MudTd DataLabel="StatusId" Style="width: 10%">@StatusPmVieweModels.FirstOrDefault(x=>x.StatusId ==item.StatusId).Title</MudTd>
+        <MudTd DataLabel="TaskTypeId" Style="width: 10%">@TaskTypePmVieweModels.FirstOrDefault(x=>x.TaskTypeId ==item.TaskTypeId).Title</MudTd>
+        <MudTd Style="text-align:end">
+            <button class="btn" @onclick="()=>EditItemDialog(item)"><i class="fa fa-folder"></i></button>
+            <button class="btn" @onclick="()=>DeleteDialogAsync(item)">
+                <i class="fa fa-trash"></i>
+            </button>
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager RowsPerPageString="Number of objects" PageSizeOptions="new int[]{50, 100}" />
+    </PagerContent>
+</MudTable>

@@ -1,0 +1,51 @@
+﻿@page "/Projects"
+@inherits ProjectsPmView
+
+<div class="d-flex justify-content-between">
+    <h2>Projects</h2>
+    <div class="d-flex" style="justify-content: flex-end">
+        <input style="margin-left:10px; border-width:1px" type="text" class="form-control-sm" placeholder="Search..." @bind-value="@FilterText" @bind-value:event="oninput" />
+        <button class="btn" @onclick="()=>ClearSearch()"><i class="fa fa-close"></i></button>
+    </div>
+</div>
+<MudButton Variant="Variant.Outlined" style="margin-bottom:14px" @onclick="AddItemDialog">Add</MudButton>
+
+
+<MudTable Items="@VieweModels" SortLabel="Sort" FixedHeader="true" Height="" Style="width: 100%" Class="mud-table-custom">
+    <HeaderContent>
+        <MudTh>
+            <MudTableSortLabel SortBy="new Func<Data.ViewModel.ProjectPmVieweModel, object>(x=>x.ProjectId)">
+                Id
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortBy="new Func<Data.ViewModel.ProjectPmVieweModel, object>(x=>x.Title)">
+                Title
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate Context="item">
+        <MudTd DataLabel="ProjectId" Style="width: 10%">@item.ProjectId</MudTd>
+        <MudTd DataLabel="Title" Style="width: 80%">@item.Title</MudTd>
+        <MudTd Style="text-align:end">
+            <button class="btn" @onclick="()=>EditItemDialog(item)"><i class="fa fa-folder"></i></button>
+            @if (item.DeleteDisabled is false)
+            {
+                <button class="btn" @onclick="()=>DeleteDialogAsync(item)">
+                    <i class="fa fa-trash"></i>
+                </button>
+            }
+            else
+            {
+                <button class="btn" disabled>
+                    <i class="fa fa-trash"></i>
+                </button>
+            }
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager RowsPerPageString="Number of objects" PageSizeOptions="new int[]{50, 100}" />
+    </PagerContent>
+</MudTable>
+

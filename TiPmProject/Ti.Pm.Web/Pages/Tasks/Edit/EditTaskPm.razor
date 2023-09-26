@@ -1,0 +1,65 @@
+﻿@using Ti.Pm.Web.Data.ViewModel;
+@inherits EditTaskPmViewe
+
+<EditForm Model="@TaskPmVieweModel" OnValidSubmit="Save">
+    <DataAnnotationsValidator />
+    <MudDialog Style="width: 25%;">
+        <DialogContent>
+            <div class="d-flex justify-content-between">
+                <MudText Typo="Typo.h6">
+                    Task
+                </MudText>
+                <div class="d-flex" style="justify-content: flex-end">
+                    <MudButton Variant="Variant.Outlined" style="margin-bottom:14px;margin-left: 10px;" type="submit" ButtonType="ButtonType.Submit">Save</MudButton>
+                    <MudButton Variant="Variant.Outlined" style="margin-bottom:14px;margin-left: 10px;" @onclick="Cancel">x</MudButton>
+                </div>
+            </div>
+            <p>
+                Name<br>
+                <input style="margin-bottom:4px; border-width:1px" type="text" class="form-control" @bind-value="@TaskPmVieweModel.Title" @bind-value:event="oninput" />
+                <ValidationMessage For="@(()=>TaskPmVieweModel.Title)" />
+            </p>
+            <p>
+                Description <br>
+                <textarea style="margin-bottom:4px; border-width:1px" type="text" class="form-control" @bind-value="@TaskPmVieweModel.Description" @bind-value:event="oninput" />
+                <ValidationMessage For="@(()=>TaskPmVieweModel.Description)" />
+
+            </p>
+
+            <p>
+                Task type<br>
+                <InputSelect style="margin-bottom:4px;" @bind-Value="@TaskPmVieweModel.TaskTypeId" class="form-select">
+                    @foreach (var item in TaskTypePmVieweModels)
+                    {
+                        <option value="@item.TaskTypeId">@item.Title</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(()=>TaskPmVieweModel.TaskTypeId)" />
+            </p>
+
+            <p>
+                Project<br>
+                <InputSelect style="margin-bottom:4px;" @bind-Value="@TaskPmVieweModel.ProjectId" class="form-select">
+                    @foreach (var item in ProjectPmVieweModels)
+                    {
+                        <option value="@item.ProjectId">@item.Title</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(()=>TaskPmVieweModel.ProjectId)" />
+
+            </p>
+
+            <p>
+                Status<br>
+                <InputSelect style="margin-bottom:4px;" @bind-Value="@TaskPmVieweModel.StatusId" Label="Status" class="form-select">
+                    @foreach (var item in StatusPmVieweModels)
+                    {
+                        <option value="@item.StatusId">@item.Title</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(()=>TaskPmVieweModel.StatusId)" />
+
+            </p>
+        </DialogContent>
+    </MudDialog>
+</EditForm>

@@ -1,0 +1,28 @@
+﻿@inherits EditStatusPmViewe
+
+<EditForm Model="@StatusPmVieweModel" OnValidSubmit="Save">
+    <DataAnnotationsValidator />
+    <MudDialog Style="width: 30%;">
+        <DialogContent>
+            <div class="d-flex justify-content-between">
+                <MudText Typo="Typo.h6">
+                    Status
+                </MudText>
+                <div class="d-flex" style="justify-content: flex-end">
+                    <MudButton Variant="Variant.Outlined" style="margin-bottom:14px;margin-left: 10px;" type="submit" ButtonType="ButtonType.Submit">Save</MudButton>
+                    <MudButton Variant="Variant.Outlined" style="margin-bottom:14px;margin-left: 10px;" @onclick="Cancel">x</MudButton>
+                </div>
+            </div>
+            <p>
+                Name<br>
+                <input style="margin-bottom:4px; border-width:1px" type="text" class="form-control" @bind-value="@StatusPmVieweModel.Title" @bind-value:event="oninput" />
+                <ValidationMessage For="@(()=>StatusPmVieweModel.Title)" />
+            </p>            
+            <p>
+                Order<br>
+                <input style="margin-bottom:4px; border-width:1px" type="number" class="form-control" @bind-value="@StatusPmVieweModel.OrderId" @bind-value:event="oninput" />
+                <ValidationMessage For="@(()=>StatusPmVieweModel.OrderId)" />
+            </p>
+        </DialogContent>
+    </MudDialog>
+</EditForm>

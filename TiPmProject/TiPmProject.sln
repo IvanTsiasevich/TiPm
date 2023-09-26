@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34024.191
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ti.Pm.PmDb", "Ti.Pm.PmDb\Ti.Pm.PmDb.csproj", "{182FFB0C-0914-4F22-8431-DCE79848ED64}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ti.Pm.Web", "Ti.Pm.Web\Ti.Pm.Web.csproj", "{A9E62413-28CD-4C21-B09D-3519CE9898C8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{182FFB0C-0914-4F22-8431-DCE79848ED64} = {182FFB0C-0914-4F22-8431-DCE79848ED64}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{182FFB0C-0914-4F22-8431-DCE79848ED64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{182FFB0C-0914-4F22-8431-DCE79848ED64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{182FFB0C-0914-4F22-8431-DCE79848ED64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{182FFB0C-0914-4F22-8431-DCE79848ED64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9E62413-28CD-4C21-B09D-3519CE9898C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9E62413-28CD-4C21-B09D-3519CE9898C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9E62413-28CD-4C21-B09D-3519CE9898C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9E62413-28CD-4C21-B09D-3519CE9898C8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A285BDFE-660D-46B8-8C8B-F5B856F58C79}
+	EndGlobalSection
+EndGlobal

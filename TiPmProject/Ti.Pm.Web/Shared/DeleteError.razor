@@ -1,0 +1,16 @@
+﻿@inherits DeleteErrorView
+
+<MudDialog Style="width: 25%;">
+    <DialogContent>
+        <div class="d-flex justify-content-between">
+            <MudText Typo="Typo.h6" >
+                <span style="color:red">Attention!</span> You cannot delete a record that has links to other records.
+            </MudText>
+            <div class="d-flex" style="justify-content: flex-end">
+                <MudButton Variant="Variant.Outlined" style="margin-bottom:14px;margin-left: 10px;" @onclick="Cancel">Ok</MudButton>
+            </div>
+        </div>
+    </DialogContent>
+</MudDialog>
+
+

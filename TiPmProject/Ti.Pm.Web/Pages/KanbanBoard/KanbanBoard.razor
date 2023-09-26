@@ -1,0 +1,59 @@
+﻿@page "/KanbanBoard"
+@inherits KanbanBoardViewe
+
+<div class="d-flex justify-content-between">
+    <h2>Kanban board</h2>
+    <div class="d-flex" style="justify-content: flex-end">
+        <InputSelect @bind-Value="@FilterByProject" class="form-select">
+            <option value="" disabled selected hidden>Project</option>
+            @foreach (var item in ProjectPmVieweModels)
+            {
+                <option value="@item.ProjectId">@item.Title</option>
+            }
+        </InputSelect>
+        <input style="margin-left:10px; border-width:1px" type="text" class="form-control-sm" placeholder="Task name..." @bind-value="@FilterTaskName" @bind-value:event="oninput" />
+        <input style="margin-left:10px; border-width:1px" type="text" class="form-control-sm" placeholder="Task type..." @bind-value="@FilterByTaskType" @bind-value:event="oninput" />
+        <button class="btn" @onclick="()=>ClearSearch()"><i class="fa fa-close"></i></button>
+    </div>
+</div> 
+
+<MudDropContainer T="DropItem" Items="_items" @ref="_container" ItemsSelector="@((item,dropzone) => item.Selector.Title == dropzone)" ItemDropped="ItemUpdated" Class="d-flex flex-wrap flex-grow-1">
+    <ChildContent>
+        @foreach (var item in _selectors)
+        {
+            var dropzone = item;
+            <MudPaper Class="ma-4 flex-grow-1">
+                <MudList Clickable="true" Class="d-flex flex-column mud-height-full">
+                    <div class="d-flex justify-content-between">
+                        <MudListSubheader> @dropzone.Title</MudListSubheader>
+                        <button class="btn" @onclick="()=>AddItemDialog(item, FilterByProject)"><i class="fa fa-plus"></i></button>
+                    </div>
+                    <MudDropZone T="DropItem" Identifier="@dropzone.Title" Class="flex-grow-1" AllowReorder="true" />
+                </MudList>
+            </MudPaper>
+        }
+    </ChildContent>
+    <ItemRenderer>
+        <MudListItem>
+            <table style="width: 100%">
+                <tbody>
+                <td style="width:90%">
+                    <MudList>
+                        <MudListSubheader Style="padding-top:0px;padding-bottom:0px">Name:</MudListSubheader>
+                        <MudListItem Style="padding-top:0px;padding-bottom:0px"> @context.Name.Title</MudListItem>
+                        <MudListSubheader Style="padding-top:0px;padding-bottom:0px">Description:</MudListSubheader>
+                        <MudListItem Style="padding-top:0px;padding-bottom:0px"> @context.Name.Description</MudListItem>
+                        <MudListSubheader Style="padding-top:0px;padding-bottom:0px">Task type:</MudListSubheader>
+                        <MudListItem Style="padding-top:0px;padding-bottom:0px"> @TaskTypePmVieweModels.FirstOrDefault(x=>x.TaskTypeId==@context.Name.TaskTypeId).Title</MudListItem>
+                    </MudList>
+                </td>
+                <td valign="top" align="right">
+                    <button class="btn" @onclick="()=>EditItemDialog(context.Name)"><i class="fa fa-book"></i></button>
+                </td>
+                </tbody>
+            </table>
+
+           
+        </MudListItem>
+    </ItemRenderer>
+</MudDropContainer>
