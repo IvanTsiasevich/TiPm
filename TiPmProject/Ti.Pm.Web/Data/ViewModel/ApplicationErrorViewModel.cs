@@ -1,50 +1,48 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Ti.Pm.PmDb.Model;
+﻿using Ti.Pm.PmDb.Model;
 
 namespace Ti.Pm.Web.Data.ViewModel
 {
     public class ApplicationErrorViewModel
     {
-        private LogApplicationError _item;
-        public LogApplicationError Item => _item;
+        private ApplicationError mDbModel;
+        public ApplicationError DbModel => mDbModel;
 
         public ApplicationErrorViewModel()
         {
-            _item = new LogApplicationError();
-
+            mDbModel = new ApplicationError();
         }
 
-        public ApplicationErrorViewModel(LogApplicationError item)
+        public ApplicationErrorViewModel(ApplicationError dbModel)
         {
-            _item = item;
+            mDbModel = dbModel;
         }
 
         public int LogApplicationErrorId
 		{
-            get => _item.LogApplicationErrorId;
-            set => _item.LogApplicationErrorId = value;
+            get => mDbModel.LogApplicationErrorId;
+            set => mDbModel.LogApplicationErrorId = value;
         }
 
         public DateTime InsertDate
         {
-            get => _item.InsertDate;
-            set => _item.InsertDate = value;
+            get => mDbModel.InsertDate;
+            set => mDbModel.InsertDate = value;
         }
 
         public string ErrorContext
         {
-            get => _item.ErrorContext;
-            set => _item.ErrorContext = value;
+            get => mDbModel.ErrorContext;
+            set => mDbModel.ErrorContext = value;
         }
         public string ErrorMessage
         {
-            get => _item.ErrorMessage;
-            set => _item.ErrorMessage = value;
+            get => mDbModel.ErrorMessage;
+            set => mDbModel.ErrorMessage = value;
         }
         public string? ErrorInnerException
         {
-            get => _item.ErrorInnerException;
-            set => _item.ErrorInnerException = value;
+            get => mDbModel.ErrorInnerException;
+            set => mDbModel.ErrorInnerException = value;
         }              
     }
 }

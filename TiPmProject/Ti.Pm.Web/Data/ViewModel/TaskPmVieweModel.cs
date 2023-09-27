@@ -5,65 +5,64 @@ namespace Ti.Pm.Web.Data.ViewModel
 {
     public class TaskPmVieweModel
     {
-        private TaskPm _item;
-        public TaskPm Item => _item;
+        private TaskPm mDbModel;
+        public TaskPm DbModel => mDbModel;
 
         public TaskPmVieweModel()
         {
-            _item = new TaskPm();
-
+            mDbModel = new TaskPm();
         }
 
         public TaskPmVieweModel(TaskPm item)
         {
-            _item = item;
+            mDbModel = item;
         }
         public int TaskId
         {
-            get => _item.TaskId;
-            set => _item.TaskId = value;
+            get => mDbModel.TaskId;
+            set => mDbModel.TaskId = value;
         }
         [Required]
         [Range(1, 10000000000000000000, ErrorMessage = "Need to choose Task Type")]
 
         public int TaskTypeId
         {
-            get => _item.TaskTypeId;
-            set => _item.TaskTypeId =value;
+            get => mDbModel.TaskTypeId;
+            set => mDbModel.TaskTypeId =value;
         }
         [Required]
         [Range(1, 10000000000000000000, ErrorMessage = "Need to choose Project")]
 
         public int ProjectId
         {
-            get => _item.ProjectId;
-            set => _item.ProjectId = value;
+            get => mDbModel.ProjectId;
+            set => mDbModel.ProjectId = value;
         }
         [Required]
         [Range(1, 10000000000000000000, ErrorMessage = "Need to choose Status")]
         public int StatusId
         {
-            get => _item.StatusId;
-            set => _item.StatusId = value;
+            get => mDbModel.StatusId;
+            set => mDbModel.StatusId = value;
         }       
 
         [Required]
         public string Title
         {
-            get => _item.Title;
-            set => _item.Title = value;
+            get => mDbModel.Title;
+            set => mDbModel.Title = value;
         }
 
         public string? ChangeLogJson
         {
-            get => _item.ChangeLogJson;
-            set => _item.ChangeLogJson = value;
+            get => mDbModel.ChangeLogJson;
+            set => mDbModel.ChangeLogJson = value;
         }
         [Required]
         public string Description
         {
-            get => _item.Description;
-            set => _item.Description = value;
+            get => mDbModel.Description;
+            set => mDbModel.Description = value;
         }
     }
 }

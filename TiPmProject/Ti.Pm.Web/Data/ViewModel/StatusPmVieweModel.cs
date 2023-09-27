@@ -1,23 +1,22 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Ti.Pm.PmDb.Model;
-using Ti.Pm.Web.Pages.Status;
 
 namespace Ti.Pm.Web.Data.ViewModel
 {
     public class StatusPmVieweModel
     {
-        private StatusPm _item;
-        public StatusPm Item => _item;
+        private StatusPm mDbModel;
+        public StatusPm DbModel => mDbModel;
 
         public StatusPmVieweModel()
         {
-            _item = new StatusPm();
+            mDbModel = new StatusPm();
 
         }
 
         public StatusPmVieweModel(StatusPm item)
         {
-            _item = item;
+            mDbModel = item;
         }
         public bool DeleteDisabled
         {
@@ -25,27 +24,27 @@ namespace Ti.Pm.Web.Data.ViewModel
         }
         public int StatusId
         {
-            get => _item.StatusId;
-            set => _item.StatusId = value;
+            get => mDbModel.StatusId;
+            set => mDbModel.StatusId = value;
         }
 
         [Required]
         public string Title
         {
-            get => _item.Title;
-            set => _item.Title = value;
+            get => mDbModel.Title;
+            set => mDbModel.Title = value;
         }
 
         public string? ChangeLogJson
         {
-            get => _item.ChangeLogJson;
-            set => _item.ChangeLogJson = value;
+            get => mDbModel.ChangeLogJson;
+            set => mDbModel.ChangeLogJson = value;
         }
         [Required]
         public int OrderId
         {
-            get => _item.OrderId;
-            set => _item.OrderId = value;
+            get => mDbModel.OrderId;
+            set => mDbModel.OrderId = value;
         }
     }
 }

@@ -6,71 +6,69 @@ namespace Ti.Pm.Web.Data.Service
 {
     public class TaskPmService
     {
-        EFRepository<TaskPm> repoTask;
-        private static TiPmDbContext DbContext;
+        EFRepository<TaskPm> mRepoTask;
 
         public TaskPmService(TiPmDbContext context)
         {
-            repoTask = new EFRepository<TaskPm>(context);
-            DbContext = context;
+            mRepoTask = new EFRepository<TaskPm>(context);
         }
         public async Task<List<TaskPmVieweModel>> GetAll()
         {
-            var listItems = repoTask.Get();
-            var result = listItems.Select(x => Convert(x)).ToList();
-            result.Reverse();
-            return await Task.FromResult(result);
+            var dbModels = mRepoTask.Get();
+            var vieweModels = dbModels.Select(x => Convert(x)).ToList();
+            vieweModels.Reverse();
+            return await Task.FromResult(vieweModels);
         }
 
-        private static TaskPmVieweModel Convert(TaskPm r)
+        private static TaskPmVieweModel Convert(TaskPm dbModel)
         {
-            var item = new TaskPmVieweModel(r);
-            return item;
+            var vieweModel = new TaskPmVieweModel(dbModel);
+            return vieweModel;
         }
 
-        public TaskPmVieweModel Update(TaskPmVieweModel item)
+        public TaskPmVieweModel Update(TaskPmVieweModel vieweModel)
         {
-            var x = repoTask.FindById(item.TaskId);
-            x.StatusId = item.StatusId;
-            x.ProjectId = item.ProjectId;
-            x.TaskTypeId = item.TaskTypeId;
-            x.Title = item.Title;
-            x.Description = item.Description;
-            return Convert(repoTask.Update(x));
+            var dbModel = mRepoTask.FindById(vieweModel.TaskId);
+            dbModel.StatusId = vieweModel.StatusId;
+            dbModel.ProjectId = vieweModel.ProjectId;
+            dbModel.TaskTypeId = vieweModel.TaskTypeId;
+            dbModel.Title = vieweModel.Title;
+            dbModel.Description = vieweModel.Description;
+            return Convert(mRepoTask.Update(dbModel));
         }
-        public TaskPmVieweModel ReloadItem(TaskPmVieweModel item)
+        public TaskPmVieweModel ReloadItem(TaskPmVieweModel vieweModel)
         {
-            var x = repoTask.Reload(item.TaskId);
-            if (x == null)
+            var dbModel = mRepoTask.Reload(vieweModel.TaskId);
+            if (dbModel == null)
             {
                 return null;
             }
-            return Convert(x);
+            return Convert(dbModel);
         }
 
-        public void Delete(TaskPmVieweModel item)
+        public void Delete(TaskPmVieweModel vieweModel)
         {
-            var x = repoTask.FindById(item.TaskId);
-            repoTask.Remove(x);
+            var dbModel = mRepoTask.FindById(vieweModel.TaskId);
+            mRepoTask.Remove(dbModel);
         }
 
-        public TaskPmVieweModel Create(TaskPmVieweModel item)
+        public TaskPmVieweModel Create(TaskPmVieweModel vieweModel)
         {
-            var newItem = repoTask.Create(item.Item);
-            return Convert(newItem);
+            var newDbModel = mRepoTask.Create(vieweModel.DbModel);
+            return Convert(newDbModel);
         }
 
-        public List<TaskPmVieweModel> FilteringText(string message)
+        public List<TaskPmVieweModel> FilteringByTitle(string message)
         {
-            var filteredList = repoTask.GetQuery().Where(x => (x.Title.Contains(message))).ToList();
+            var filteredList = mRepoTask.GetQuery().Where(x => x.Title.ToLower().Contains(message.ToLower())).ToList();
             var result = filteredList.Select(Convert).ToList();
             result.Reverse();
             return result;
         }
        
-        public List<TaskPmVieweModel> FilteringByProject(int ProgectId)
+        public List<TaskPmVieweModel> FilteringByProject(int progectId)
         {
-            var filteredList = repoTask.GetQuery().Where(x => (x.ProjectId == ProgectId)).ToList();
+            var filteredList = mRepoTask.GetQuery().Where(x => (x.ProjectId == progectId)).ToList();
             var result = filteredList.Select(Convert).ToList();
             result.Reverse();
             return result;

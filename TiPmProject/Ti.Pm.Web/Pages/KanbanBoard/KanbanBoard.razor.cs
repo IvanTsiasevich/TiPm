@@ -4,13 +4,21 @@ using MudBlazor;
 using Ti.Pm.Web.Data.Service;
 using Ti.Pm.Web.Data.ViewModel;
 using Ti.Pm.Web.Pages.Tasks.Edit;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
 
 namespace Ti.Pm.Web.Pages.KanbanBoard
 {
     public class KanbanBoardViewe : ComponentBase
     {
+        public int mFilterProjectId = new();
+        public string mFilterTaskType = "";
+        public string mFilterTaskName = "";
+
+        public List<DropItem> mItems = new();
+
+        public List<StatusPmVieweModel> mSelectors = new();
+
+        public MudDropContainer<DropItem> mContainer;
+
         [Inject] protected IDialogService DialogService { get; set; }
         [Inject] private LogApplicationService applicationErrorService { get; set; }
         [Inject] private TaskPmService TaskPmService { get; set; }
@@ -21,18 +29,9 @@ namespace Ti.Pm.Web.Pages.KanbanBoard
         public List<TaskTypePmVieweModel> TaskTypePmVieweModels { get; set; }
         public List<ProjectPmVieweModel> ProjectPmVieweModels { get; set; }
         public List<StatusPmVieweModel> StatusPmVieweModels { get; set; }
+        public List<TaskPmVieweModel> TaskPmVieweModels { get; set; }  
 
-        public List<TaskPmVieweModel> VieweModels { get; set; } = new List<TaskPmVieweModel>();
-
-        public int filterProjectId = new();
-        public string filterTaskType = "";
-        public string filterTaskName = "";
-
-        public List<DropItem> _items = new();
-
-        public List<StatusPmVieweModel> _selectors = new();
-
-        public MudDropContainer<DropItem> _container;
+      
 
         protected override async Task OnInitializedAsync()
         {
@@ -41,15 +40,15 @@ namespace Ti.Pm.Web.Pages.KanbanBoard
                 TaskTypePmVieweModels = await TaskTypePmService.GetAll();
                 ProjectPmVieweModels = await ProjectPmService.GetAll();
                 StatusPmVieweModels = await StatusPmService.GetAll();
-                VieweModels = await TaskPmService.GetAll();
+                TaskPmVieweModels = await TaskPmService.GetAll();
                 if (!ProjectPmVieweModels.IsNullOrEmpty())
                 {
-                    filterProjectId = ProjectPmVieweModels[0].ProjectId;
+                    mFilterProjectId = ProjectPmVieweModels[0].ProjectId;
                 }
                 var SortStatusPmVieweModels = StatusPmVieweModels.OrderBy(x => x.OrderId);
                 foreach (var item in SortStatusPmVieweModels)
                 {
-                    _selectors.Add(item);
+                    mSelectors.Add(item);
                 }
                 GrandFilter();
                 MakeItems();
@@ -73,23 +72,23 @@ namespace Ti.Pm.Web.Pages.KanbanBoard
         {
             try
             {
-                VieweModels = TaskPmService.FilteringByProject(filterProjectId);
-                if (filterTaskType != "")
+                TaskPmVieweModels = TaskPmService.FilteringByProject(mFilterProjectId);
+                if (mFilterTaskType != "")
                 {
-                    if (TaskTypePmVieweModels.FirstOrDefault(x => x.Title.Contains(filterTaskType)) != null)
+                    if (TaskTypePmVieweModels.FirstOrDefault(x => x.Title.ToLower().Contains(mFilterTaskType.ToLower())) != null)
                     {
-                        var filteredList = VieweModels.Where(x => x.TaskTypeId == (TaskTypePmVieweModels.FirstOrDefault(x => x.Title.Contains(filterTaskType)).TaskTypeId)).ToList();
-                        VieweModels = filteredList;
+                        var filteredList = TaskPmVieweModels.Where(x => x.TaskTypeId == (TaskTypePmVieweModels.FirstOrDefault(x => x.Title.ToLower().Contains(mFilterTaskType.ToLower())).TaskTypeId)).ToList();
+                        TaskPmVieweModels = filteredList;
                     }
                     else
                     {
-                        VieweModels.Clear();
+                        TaskPmVieweModels.Clear();
                     }
                 }
                 if (FilterTaskName != "")
                 {
-                    var filteredSecondList = VieweModels.Where(x => x.Title.Contains(filterTaskName)).ToList();
-                    VieweModels = filteredSecondList;
+                    var filteredSecondList = TaskPmVieweModels.Where(x => x.Title.ToLower().Contains(mFilterTaskName.ToLower())).ToList();
+                    TaskPmVieweModels = filteredSecondList;
                 }
             }
             catch (Exception ex)
@@ -109,11 +108,11 @@ namespace Ti.Pm.Web.Pages.KanbanBoard
 
         public int FilterByProject
         {
-            get => filterProjectId;
+            get => mFilterProjectId;
 
             set
             {
-                filterProjectId = value;
+                mFilterProjectId = value;
                 GrandFilter();
                 MakeItems();
                 RefreshContainer();
@@ -121,10 +120,10 @@ namespace Ti.Pm.Web.Pages.KanbanBoard
         }
         public string FilterByTaskType
         {
-            get => filterTaskType;
+            get => mFilterTaskType;
             set
             {
-                filterTaskType = value;
+                mFilterTaskType = value;
                 GrandFilter();
                 MakeItems();
                 RefreshContainer();
@@ -132,10 +131,10 @@ namespace Ti.Pm.Web.Pages.KanbanBoard
         }
         public string FilterTaskName
         {
-            get => filterTaskName;
+            get => mFilterTaskName;
             set
             {
-                filterTaskName = value;
+                mFilterTaskName = value;
                 GrandFilter();
                 MakeItems();
                 RefreshContainer();
@@ -146,8 +145,8 @@ namespace Ti.Pm.Web.Pages.KanbanBoard
         {
             try
             {
-                filterTaskType = "";
-                filterTaskName = "";
+                mFilterTaskType = "";
+                mFilterTaskName = "";
                 GrandFilter();
                 MakeItems();
                 RefreshContainer();
@@ -171,10 +170,10 @@ namespace Ti.Pm.Web.Pages.KanbanBoard
         {
             try
             {
-                _items.Clear();
-                foreach (var item in VieweModels)
+                mItems.Clear();
+                foreach (var item in TaskPmVieweModels)
                 {
-                    _items.Add(new DropItem() { Name = item, Selector = _selectors.FirstOrDefault(x => x.StatusId == item.StatusId) });
+                    mItems.Add(new DropItem() { Name = item, Selector = mSelectors.FirstOrDefault(x => x.StatusId == item.StatusId) });
                 }
             }
             catch (Exception ex)
@@ -197,7 +196,7 @@ namespace Ti.Pm.Web.Pages.KanbanBoard
             try
             {
                 TaskPmService.Delete(item);
-                VieweModels.Remove(item);
+                TaskPmVieweModels.Remove(item);
                 StateHasChanged();
             }
             catch (Exception ex)
@@ -230,7 +229,7 @@ namespace Ti.Pm.Web.Pages.KanbanBoard
                     TaskPmVieweModel returnModel = new TaskPmVieweModel();
                     returnModel = newItem;
                     var newUser = TaskPmService.Create(returnModel);
-                    VieweModels.Add(newItem);
+                    TaskPmVieweModels.Add(newItem);
                     MakeItems();
                     RefreshContainer();
                 }
@@ -263,8 +262,8 @@ namespace Ti.Pm.Web.Pages.KanbanBoard
                     TaskPmVieweModel returnModel = new TaskPmVieweModel();
                     returnModel = (TaskPmVieweModel)result.Data;
                     var newItem = TaskPmService.Update(returnModel);
-                    var index = VieweModels.FindIndex(x => x.TaskId == newItem.TaskId);
-                    VieweModels[index] = newItem;
+                    var index = TaskPmVieweModels.FindIndex(x => x.TaskId == newItem.TaskId);
+                    TaskPmVieweModels[index] = newItem;
                     MakeItems();
                     RefreshContainer();
                 }
@@ -272,8 +271,8 @@ namespace Ti.Pm.Web.Pages.KanbanBoard
                 {
                     TaskPmVieweModel oldItem = new TaskPmVieweModel();
                     oldItem = TaskPmService.ReloadItem(item);
-                    var index = VieweModels.FindIndex(x => x.TaskId == oldItem.TaskId);
-                    VieweModels[index] = oldItem;
+                    var index = TaskPmVieweModels.FindIndex(x => x.TaskId == oldItem.TaskId);
+                    TaskPmVieweModels[index] = oldItem;
                     MakeItems();
                     RefreshContainer();
                 }
@@ -297,7 +296,7 @@ namespace Ti.Pm.Web.Pages.KanbanBoard
         {
             try
             {
-                dropItem.Item.Selector = _selectors.FirstOrDefault(x => x.Title == dropItem.DropzoneIdentifier);
+                dropItem.Item.Selector = mSelectors.FirstOrDefault(x => x.Title == dropItem.DropzoneIdentifier);
                 dropItem.Item.Name.StatusId = dropItem.Item.Selector.StatusId;
                 TaskPmService.Update(dropItem.Item.Name);
             }
@@ -325,7 +324,7 @@ namespace Ti.Pm.Web.Pages.KanbanBoard
             try
             {
                 StateHasChanged();
-                _container.Refresh();
+                mContainer.Refresh();
             }
             catch (Exception ex)
             {

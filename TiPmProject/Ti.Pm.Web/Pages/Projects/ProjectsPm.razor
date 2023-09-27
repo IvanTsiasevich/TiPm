@@ -4,14 +4,14 @@
 <div class="d-flex justify-content-between">
     <h2>Projects</h2>
     <div class="d-flex" style="justify-content: flex-end">
-        <input style="margin-left:10px; border-width:1px" type="text" class="form-control-sm" placeholder="Search..." @bind-value="@FilterText" @bind-value:event="oninput" />
+        <input style="margin-left:10px; border-width:1px" type="text" class="form-control-sm" placeholder="Search..." @bind-value="@FilterByTitle" @bind-value:event="oninput" />
         <button class="btn" @onclick="()=>ClearSearch()"><i class="fa fa-close"></i></button>
     </div>
 </div>
 <MudButton Variant="Variant.Outlined" style="margin-bottom:14px" @onclick="AddItemDialog">Add</MudButton>
 
 
-<MudTable Items="@VieweModels" SortLabel="Sort" FixedHeader="true" Height="" Style="width: 100%" Class="mud-table-custom">
+<MudTable Items="@ProjectVieweModels" SortLabel="Sort" FixedHeader="true" Height="" Style="width: 100%" Class="mud-table-custom">
     <HeaderContent>
         <MudTh>
             <MudTableSortLabel SortBy="new Func<Data.ViewModel.ProjectPmVieweModel, object>(x=>x.ProjectId)">

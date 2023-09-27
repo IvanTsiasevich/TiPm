@@ -16,7 +16,7 @@ namespace Ti.Pm.PmDb
 
         }
 
-        public DbSet<LogApplicationError> LogApplicationError { get; set; }
+        public DbSet<ApplicationError> ApplicationError { get; set; }
         public DbSet<ProjectPm> ProjectPm { get; set; }
         public DbSet<TaskTypePm> TaskTypePm { get; set; }
         public DbSet<StatusPm> StatusPm { get; set; }

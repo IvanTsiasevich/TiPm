@@ -3,15 +3,15 @@
 <div class="d-flex justify-content-between">
     <h2>Log Application Error</h2>
     <div class="d-flex" style="justify-content: flex-end">
-        <input type="date" style="border-width:1px" class="form-control-sm" @bind-value="@FilterDate" @bind-value:event="oninput" />
-        <input style="margin-left:10px; border-width:1px" type="text" class="form-control-sm" placeholder="Search..." @bind-value="@FilterText" @bind-value:event="oninput" />
+        <input type="date" style="border-width:1px" class="form-control-sm" @bind-value="@FilterByDate" @bind-value:event="oninput" />
+        <input style="margin-left:10px; border-width:1px" type="text" class="form-control-sm" placeholder="Search..." @bind-value="@FilterByErrorMsg" @bind-value:event="oninput" />
         <button class="btn" @onclick="()=>ClearSearch()"><i class="fa fa-close"></i></button>
     </div>
 </div>
 <br />
 
 
-<MudTable Items="@applicationErrorVieweModel" SortLabel="Sort" Height="100%" Style="width: 100%">
+<MudTable Items="@ApplicationErrorVieweModels" SortLabel="Sort" Height="100%" Style="width: 100%">
     <HeaderContent>
         <MudTh >
             <MudTableSortLabel SortBy="new Func<Data.ViewModel.ApplicationErrorViewModel, object>(x=>x.InsertDate)">

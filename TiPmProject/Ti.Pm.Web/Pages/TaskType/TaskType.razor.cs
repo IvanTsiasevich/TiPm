@@ -11,24 +11,24 @@ namespace Ti.Pm.Web.Pages.TaskType
 {
     public class TaskTypeView : ComponentBase
     {
+        //Является полем которому мы присваем значение по умолчанию, и изменяем его введением фильтра при пролучении FilterByTitle,
+        //и только после этого фильтруем функцией FiltersByTitle() которая поле и использует и сразу же вызывается после присвоения поля.
+        public string mFilterTitle = "";
         [Inject] protected IDialogService DialogService { get; set; }
-        [Inject] private LogApplicationService applicationErrorService { get; set; }
-        [Inject] private TaskTypePmService Service { get; set; }
-        [Inject] private TaskPmService TaskService { get; set; }
+        [Inject] private LogApplicationService ApplicationErrorService { get; set; }
+        [Inject] private TaskTypePmService TaskTypePmService { get; set; }
+        [Inject] private TaskPmService TaskPmService { get; set; }
 
-        public List<TaskTypePmVieweModel> VieweModels { get; set; } = new List<TaskTypePmVieweModel>();
-        public List<TaskPmVieweModel> TaskModels { get; set; } = new List<TaskPmVieweModel>();
-
-        public string filterText = "";
-
+        public List<TaskTypePmVieweModel> TaskTypeVieweModel { get; set; } 
+        public List<TaskPmVieweModel> TaskModels { get; set; } 
         protected override async Task OnInitializedAsync()
         {
             try
             {
-                VieweModels = await Service.GetAll();
-                TaskModels = await TaskService.GetAll();
+                TaskTypeVieweModel = await TaskTypePmService.GetAll();
+                TaskModels = await TaskPmService.GetAll();
                 var UpdatedModels = new List<TaskTypePmVieweModel>();
-                foreach (var model in VieweModels)
+                foreach (var model in TaskTypeVieweModel)
                 {
                     if (TaskModels.Any(x => x.TaskTypeId == model.TaskTypeId))
                     {
@@ -40,58 +40,57 @@ namespace Ti.Pm.Web.Pages.TaskType
                         UpdatedModels.Add(model);
                     }
                 }
-                VieweModels = UpdatedModels;
+                TaskTypeVieweModel = UpdatedModels;
             }
             catch (Exception ex)
             {
                 if (ex.InnerException != null)
                 {
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
                 }
                 else
                 {
                     string? message = null;
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
                 }
             }
 
         }
 
-        public string FilterText
+        public string FilterByTitle
         {
-            get => filterText;
-
+            get => mFilterTitle;
             set
             {
-                filterText = value;
-                FiltersText();
+                mFilterTitle = value;
+                FiltersByTitle();
             }
         }
 
-        protected void FiltersText()
+        protected void FiltersByTitle()
         {
             try
             {
-                VieweModels = Service.FilteringText(filterText);
+                TaskTypeVieweModel = TaskTypePmService.FilteringByTitle(mFilterTitle);
                 StateHasChanged();
             }
             catch (Exception ex)
             {
                 if (ex.InnerException != null)
                 {
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
                 }
                 else
                 {
                     string? message = null;
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
                 }
             }
 
         }
         protected void ClearSearch()
         {
-            FilterText = "";
+            FilterByTitle = "";
         }
 
         protected async Task DeleteDialogAsync(TaskTypePmVieweModel item)
@@ -105,20 +104,20 @@ namespace Ti.Pm.Web.Pages.TaskType
                 {
                     try
                     {
-                        Service.Delete(item);
-                        VieweModels.Remove(item);
+                        TaskTypePmService.Delete(item);
+                        TaskTypeVieweModel.Remove(item);
                         StateHasChanged();
                     }
                     catch (Exception ex)
                     {
                         if (ex.InnerException is SqlException || ex is SqlException)
                         {
-                            var options1 = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium };
-                            var dialog1 = DialogService.Show<DeleteError>("", options);
-                            var result1 = await dialog1.Result;
+                            options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium };
+                            dialog = DialogService.Show<DeleteError>("", options);
+                            result = await dialog.Result;
                             item.DeleteDisabled = true;
-                            var index = VieweModels.FindIndex(x => x.TaskTypeId == item.TaskTypeId);
-                            VieweModels[index] = item;
+                            var index = TaskTypeVieweModel.FindIndex(x => x.TaskTypeId == item.TaskTypeId);
+                            TaskTypeVieweModel[index] = item;
                             StateHasChanged();
                             return;
                         }
@@ -126,12 +125,12 @@ namespace Ti.Pm.Web.Pages.TaskType
                         {
                             if (ex.InnerException != null)
                             {
-                                applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
+                                ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
                             }
                             else
                             {
                                 string? message = null;
-                                applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
+                                ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
                             }
                         }
                     }
@@ -142,12 +141,12 @@ namespace Ti.Pm.Web.Pages.TaskType
             {
                 if (ex.InnerException != null)
                 {
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
                 }
                 else
                 {
                     string? message = null;
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
                 }
             }
 
@@ -166,8 +165,8 @@ namespace Ti.Pm.Web.Pages.TaskType
                 {
                     TaskTypePmVieweModel returnModel = new TaskTypePmVieweModel();
                     returnModel = newItem;
-                    var newUser = Service.Create(returnModel);
-                    VieweModels.Add(newItem);
+                    var newUser = TaskTypePmService.Create(returnModel);
+                    TaskTypeVieweModel.Add(newItem);
                     StateHasChanged();
                 }
 
@@ -176,12 +175,12 @@ namespace Ti.Pm.Web.Pages.TaskType
             {
                 if (ex.InnerException != null)
                 {
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
                 }
                 else
                 {
                     string? message = null;
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
                 }
             }
         }
@@ -198,17 +197,17 @@ namespace Ti.Pm.Web.Pages.TaskType
                 {
                     TaskTypePmVieweModel returnModel = new TaskTypePmVieweModel();
                     returnModel = (TaskTypePmVieweModel)result.Data;
-                    var newItem = Service.Update(returnModel);
-                    var index = VieweModels.FindIndex(x => x.TaskTypeId == newItem.TaskTypeId);
-                    newItem.DeleteDisabled = VieweModels[index].DeleteDisabled;                    
-                    VieweModels[index] = newItem;
+                    var newItem = TaskTypePmService.Update(returnModel);
+                    var index = TaskTypeVieweModel.FindIndex(x => x.TaskTypeId == newItem.TaskTypeId);
+                    newItem.DeleteDisabled = TaskTypeVieweModel[index].DeleteDisabled;                    
+                    TaskTypeVieweModel[index] = newItem;
                     StateHasChanged();
                 }
                 else
                 {
-                    var oldItem = Service.ReloadItem(item);
-                    var index = VieweModels.FindIndex(x => x.TaskTypeId == oldItem.TaskTypeId);
-                    VieweModels[index] = oldItem;
+                    var oldItem = TaskTypePmService.ReloadItem(item);
+                    var index = TaskTypeVieweModel.FindIndex(x => x.TaskTypeId == oldItem.TaskTypeId);
+                    TaskTypeVieweModel[index] = oldItem;
                     StateHasChanged();
                 }
 
@@ -217,12 +216,12 @@ namespace Ti.Pm.Web.Pages.TaskType
             {
                 if (ex.InnerException != null)
                 {
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
                 }
                 else
                 {
                     string? message = null;
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
                 }
             }
         }

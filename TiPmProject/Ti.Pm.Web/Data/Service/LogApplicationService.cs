@@ -7,71 +7,51 @@ namespace Ti.Pm.Web.Data.Service
 {
     public class LogApplicationService
     {
-        EFRepository<LogApplicationError> repoLog;
-        private static TiPmDbContext DbContext;
+        EFRepository<ApplicationError> mRepoLog;
 
         public LogApplicationService(TiPmDbContext context)
         { 
-            repoLog = new EFRepository<LogApplicationError>(context);
-            DbContext = context;
+            mRepoLog = new EFRepository<ApplicationError>(context);
         }
+
         public async Task<List<ApplicationErrorViewModel>> GetAll()
         {
-            var listItems = repoLog.Get();
-            var result = listItems.Select(x => Convert(x)).ToList();
+            var listItems = mRepoLog.Get();
+            var result = listItems.Select(x => Convert(x)).ToList();//Более читаемо касательно вопроса почему конверт работает без передачи
             result.Reverse();
             return await Task.FromResult(result);
         }
 
-        private static ApplicationErrorViewModel Convert(LogApplicationError r)
+        private static ApplicationErrorViewModel Convert(ApplicationError dbModel)
         {
-            var item = new ApplicationErrorViewModel(r);
-            return item;
-        }
-
-        public ApplicationErrorViewModel ReloadItem(ApplicationErrorViewModel item)
-        {
-            var x = repoLog.Reload(item.LogApplicationErrorId);
-            if (x == null)
-            {
-                return null;
-            }
-            return Convert(x);
-        }
-
-        public void Delete(ApplicationErrorViewModel item)
-        {
-            var x = repoLog.FindById(item.LogApplicationErrorId);
-            repoLog.Remove(x);
+            var model = new ApplicationErrorViewModel(dbModel);
+            return model;
         }
 
         public ApplicationErrorViewModel Create(string msg, string stackTrace, DateTime date, string? innerEx)
         {
-            var item = new ApplicationErrorViewModel
+            var viewModel = new ApplicationErrorViewModel
 			{
 				InsertDate = date,
                 ErrorMessage = msg,
                 ErrorContext = stackTrace,
 				ErrorInnerException = innerEx
-
 			};
-            Console.WriteLine($"\n{msg}   {stackTrace}  {date}");
-            var newItem = repoLog.Create(item.Item);
-            return Convert(newItem);
+            var dbModel = mRepoLog.Create(viewModel.DbModel);
+            return Convert(dbModel);
         }
-        
-       
-        public List<ApplicationErrorViewModel> Filtering(DateTime? y)
+              
+        public List<ApplicationErrorViewModel> FilteringByDate(DateTime? dateFilter)
         {
-            var filteredListLogs = repoLog.GetQuery().Where(x => x.InsertDate.Date == y.GetValueOrDefault().Date).ToList();
+            var filteredListLogs = mRepoLog.GetQuery().Where(x => x.InsertDate.Date == dateFilter.GetValueOrDefault().Date).ToList();
             var result = filteredListLogs.Select(Convert).ToList();
             result.Reverse();
             return result;
         }
-        public List<ApplicationErrorViewModel> FilteringError(string message)
+        public List<ApplicationErrorViewModel> FilteringByErrorMsg(string message)
         {
-            var filteredListLogs = repoLog.GetQuery().Where(x => (x.ErrorMessage.Contains(message))).ToList();
-            var result = filteredListLogs.Select(Convert).ToList();
+            var filteredListLogs = mRepoLog.GetQuery().Where(x => x.ErrorMessage.ToLower().Contains(message.ToLower())).ToList();
+            var result = filteredListLogs.Select(x=>Convert(x)).ToList();
             result.Reverse();
             return result;
         }

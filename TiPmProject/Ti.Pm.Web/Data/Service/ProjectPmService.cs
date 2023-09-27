@@ -15,50 +15,50 @@ namespace Ti.Pm.Web.Data.Service
         }
         public async Task<List<ProjectPmVieweModel>> GetAll()
         {
-            var listItems = mRepoProject.Get();
-            var result = listItems.Select(x => Convert(x)).ToList();
-            result.Reverse();
-            return await Task.FromResult(result);
+            var dbModels = mRepoProject.Get();
+            var vieweModels = dbModels.Select(x => Convert(x)).ToList();
+            vieweModels.Reverse();
+            return await Task.FromResult(vieweModels);
         }
 
-        private static ProjectPmVieweModel Convert(ProjectPm model)
+        private static ProjectPmVieweModel Convert(ProjectPm dbModel)
         {
-            var item = new ProjectPmVieweModel(model);
-            return item;
+            var vieweModel = new ProjectPmVieweModel(dbModel);
+            return vieweModel;
         }
 
-        public ProjectPmVieweModel Update(ProjectPmVieweModel item)
+        public ProjectPmVieweModel Update(ProjectPmVieweModel updatedVieweModel)
         {
-            var model = mRepoProject.FindById(item.ProjectId);
-            model.Title = item.Title;
-            return Convert(mRepoProject.Update(model));
+            var vieweModel = mRepoProject.FindById(updatedVieweModel.ProjectId);
+            vieweModel.Title = updatedVieweModel.Title;
+            return Convert(mRepoProject.Update(vieweModel));
         }
-        public ProjectPmVieweModel ReloadItem(ProjectPmVieweModel item)
+        public ProjectPmVieweModel ReloadItem(ProjectPmVieweModel updatedVieweModel)
         {
-            var model = mRepoProject.Reload(item.ProjectId);
-            if (model == null)
+            var oldModel = mRepoProject.Reload(updatedVieweModel.ProjectId);
+            if (oldModel == null)
             {
                 return null;
             }
-            return Convert(model);
+            return Convert(oldModel);
         }
 
-        public void Delete(ProjectPmVieweModel item)
+        public void Delete(ProjectPmVieweModel vieweModel)
         {
-            var model = mRepoProject.FindById(item.ProjectId);
-            mRepoProject.Remove(model);
+            var dbModel = mRepoProject.FindById(vieweModel.ProjectId);
+            mRepoProject.Remove(dbModel);
         }
 
-        public ProjectPmVieweModel Create(ProjectPmVieweModel item)
+        public ProjectPmVieweModel Create(ProjectPmVieweModel vieweModel)
         {           
-            var newItem = mRepoProject.Create(item.Item);
-            return Convert(newItem);
+            var dbModel = mRepoProject.Create(vieweModel.DbModel);
+            return Convert(dbModel);
         }
   
-        public List<ProjectPmVieweModel> FilteringText(string message)
+        public List<ProjectPmVieweModel> FilteringByTitle(string title)
         {
-            var filteredListLogs = mRepoProject.GetQuery().Where(x => (x.Title.Contains(message))).ToList();
-            var result = filteredListLogs.Select(Convert).ToList();
+            var filteredListLogs = mRepoProject.GetQuery().Where(x => x.Title.ToLower().Contains(title.ToLower())).ToList();
+            var result = filteredListLogs.Select(x=>Convert(x)).ToList();
             result.Reverse();
             return result;
         }

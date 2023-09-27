@@ -19,8 +19,6 @@ namespace Ti.Pm.Web
         }
         public void ConfigureServices(IServiceCollection services)
         {
-            /*var builder = WebApplication.CreateBuilder();*/
-
             services.AddControllersWithViews();
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddMudServices();
@@ -30,12 +28,8 @@ namespace Ti.Pm.Web
 
             Thread.CurrentThread.CurrentCulture = new CultureInfo("ru-RU");
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("ru-RU");
-
-            //services.AddAppConfig(Configuration);
-            //services.AddLocalStorage();
-            //Blazored.LocalStorage.ServiceCollectionExtensions.AddBlazoredLocalStorage(services);
-            services.AddServerSideBlazor().AddCircuitOptions(options => { options.DetailedErrors = true; });
-           
+            
+            services.AddServerSideBlazor().AddCircuitOptions(options => { options.DetailedErrors = true; });         
             services.AddControllersWithViews();
             services.AddHttpContextAccessor();
 
@@ -45,15 +39,14 @@ namespace Ti.Pm.Web
             {
                 var client = new HttpClient(new HttpClientHandler()
                 {
-                    ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator //()=> { true}
+                    ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator 
                 });
                 return client;
             });
            
 
             services.AddDbContext<TiPmDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TiPmDbContext")));           
-            services.AddLogging();
-            //services.AddServerLogger();
+            //services.AddLogging();
             services.AddScoped<LogApplicationService>();
             services.AddScoped<ProjectPmService>();
             services.AddScoped<TaskTypePmService>();
@@ -75,8 +68,6 @@ namespace Ti.Pm.Web
             }
             app.UsePathBase("/backend");
 
-            app.UseStaticFiles();
-
             app.UseRequestLocalization();
 
             app.UseHttpsRedirection();
@@ -87,8 +78,6 @@ namespace Ti.Pm.Web
 
             app.UseEndpoints(endpoints =>
             {
-
-
                 endpoints.MapControllers();
                 endpoints.MapControllerRoute(
             name: "default",

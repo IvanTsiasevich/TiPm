@@ -6,61 +6,58 @@ namespace Ti.Pm.Web.Data.Service
 {
     public class StatusPmService
     {
-        EFRepository<StatusPm> repoStatusPm;
-        private static TiPmDbContext DbContext;
-
+        EFRepository<StatusPm> mRepoStatusPm;
         public StatusPmService(TiPmDbContext context)
         {
-            repoStatusPm = new EFRepository<StatusPm>(context);
-            DbContext = context;
+            mRepoStatusPm = new EFRepository<StatusPm>(context);
         }
         public async Task<List<StatusPmVieweModel>> GetAll()
         {
-            var listItems = repoStatusPm.Get();
-            var result = listItems.Select(x => Convert(x)).ToList();
-            result.Reverse();
-            return await Task.FromResult(result);
+            var dbModels = mRepoStatusPm.Get();
+            var vieweModels = dbModels.Select(x => Convert(x)).ToList();
+            vieweModels.Reverse();
+            return await Task.FromResult(vieweModels);
         }
 
-        private static StatusPmVieweModel Convert(StatusPm r)
+        private static StatusPmVieweModel Convert(StatusPm dbModel)
         {
-            var item = new StatusPmVieweModel(r);
-            return item;
+            var vieweModel = new StatusPmVieweModel(dbModel);
+            return vieweModel;
         }
 
-        public StatusPmVieweModel Update(StatusPmVieweModel item)
+        public StatusPmVieweModel Update(StatusPmVieweModel vieweModel)
         {
-            var x = repoStatusPm.FindById(item.StatusId);
-            x.Title = item.Title;
-            x.OrderId = item.OrderId;
-            return Convert(repoStatusPm.Update(x));
+            var dbModel = mRepoStatusPm.FindById(vieweModel.StatusId);
+            dbModel.Title = vieweModel.Title;
+            dbModel.OrderId = vieweModel.OrderId;
+            return Convert(mRepoStatusPm.Update(dbModel));
         }
-        public StatusPmVieweModel ReloadItem(StatusPmVieweModel item)
+        public StatusPmVieweModel ReloadItem(StatusPmVieweModel vieweModel)
         {
-            var x = repoStatusPm.Reload(item.StatusId);
-            if (x == null)
+            var dbModel = mRepoStatusPm.Reload(vieweModel.StatusId);
+            if (dbModel == null)
             {
                 return null;
             }
-            return Convert(x);
+            return Convert(dbModel);
         }
 
-        public void Delete(StatusPmVieweModel item)
+        public void Delete(StatusPmVieweModel vieweModel)
         {
-            var x = repoStatusPm.FindById(item.StatusId);
-            repoStatusPm.Remove(x);
+            var dbModel = mRepoStatusPm.FindById(vieweModel.StatusId);
+            mRepoStatusPm.Remove(dbModel);
         }
 
-        public StatusPmVieweModel Create(StatusPmVieweModel item)
+        public StatusPmVieweModel Create(StatusPmVieweModel vieweModel)
         {
-            var newItem = repoStatusPm.Create(item.Item);
-            return Convert(newItem);
+            var newDbModel = mRepoStatusPm.Create(vieweModel.DbModel);
+            return Convert(newDbModel);
         }
 
-        public List<StatusPmVieweModel> FilteringText(string message)
+        public List<StatusPmVieweModel> FilteringByTitle(string message)
         {
-            var filteredListLogs = repoStatusPm.GetQuery().Where(x => (x.Title.Contains(message))).ToList();
-            var result = filteredListLogs.Select(Convert).ToList();
+            var filteredListStatuses = mRepoStatusPm.GetQuery().Where(x => x.Title.ToLower().Contains(message.ToLower())).ToList();
+            var result = filteredListStatuses.Select(Convert).ToList();
             result.Reverse();
             return result;
         }

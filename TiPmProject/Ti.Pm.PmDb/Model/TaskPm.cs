@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ti.Pm.PmDb.Model
 {
@@ -24,7 +19,6 @@ namespace Ti.Pm.PmDb.Model
         public int StatusId { get; set; }
         public int TaskTypeId { get; set; }
         public string Description { get; set; }
-
     }
 }
 

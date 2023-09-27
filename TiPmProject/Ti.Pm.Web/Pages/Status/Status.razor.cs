@@ -13,24 +13,25 @@ namespace Ti.Pm.Web.Pages.Status
 {
     public class StatusView : ComponentBase
     {
+        public string mFilterTitle = "";
+
         [Inject] protected IDialogService DialogService { get; set; }
-        [Inject] private LogApplicationService applicationErrorService { get; set; }
-        [Inject] private StatusPmService Service { get; set; }
-        [Inject] private TaskPmService TaskService { get; set; }
+        [Inject] private LogApplicationService ApplicationErrorService { get; set; }
+        [Inject] private StatusPmService StatusPmService { get; set; }
+        [Inject] private TaskPmService TaskPmService { get; set; }
 
-        public List<StatusPmVieweModel> VieweModels { get; set; } = new List<StatusPmVieweModel>();
-        public List<TaskPmVieweModel> TaskModels { get; set; } = new List<TaskPmVieweModel>();
+        public List<StatusPmVieweModel> StatusModels { get; set; } 
+        public List<TaskPmVieweModel> TaskModels { get; set; } 
 
-        public string filterText = "";
 
         protected override async Task OnInitializedAsync()
         {
             try
             {
-                VieweModels = await Service.GetAll();
-                TaskModels = await TaskService.GetAll();
+                StatusModels = await StatusPmService.GetAll();
+                TaskModels = await TaskPmService.GetAll();
                 var UpdatedModels = new List<StatusPmVieweModel>();
-                foreach (var model in VieweModels)
+                foreach (var model in StatusModels)
                 {
                     if (TaskModels.Any(x => x.StatusId == model.StatusId))
                     {
@@ -42,60 +43,60 @@ namespace Ti.Pm.Web.Pages.Status
                         UpdatedModels.Add(model);
                     }
                 }
-                VieweModels = UpdatedModels;
+                StatusModels = UpdatedModels;
             }
             catch (Exception ex)
             {
                 if (ex.InnerException != null)
                 {
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
                 }
                 else
                 {
                     string? message = null;
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
                 }
             }
 
         }
 
-        public string FilterText
+        public string FilterByTitle
         {
-            get => filterText;
+            get => mFilterTitle;
 
             set
             {
                 {
-                    filterText = value;
-                    FiltersText();
+                    mFilterTitle = value;
+                    FiltersByTitle();
                 }
             }
         }
 
-        protected void FiltersText()
+        protected void FiltersByTitle()
         {
             try
             {
-                VieweModels = Service.FilteringText(filterText);
+                StatusModels = StatusPmService.FilteringByTitle(mFilterTitle);
                 StateHasChanged();
             }
             catch (Exception ex)
             {
                 if (ex.InnerException != null)
                 {
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
                 }
                 else
                 {
                     string? message = null;
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
                 }
             }
 
         }
         protected void ClearSearch()
         {
-            FilterText = "";
+            FilterByTitle = "";
         }
 
         protected async Task DeleteDialogAsync(StatusPmVieweModel item)
@@ -109,20 +110,20 @@ namespace Ti.Pm.Web.Pages.Status
                 {
                     try
                     {
-                        Service.Delete(item);
-                        VieweModels.Remove(item);
+                        StatusPmService.Delete(item);
+                        StatusModels.Remove(item);
                         StateHasChanged();
                     }
                     catch (Exception ex)
                     {
                         if (ex.InnerException is SqlException || ex is SqlException)
                         {
-                            var options1 = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium };
-                            var dialog1 = DialogService.Show<DeleteError>("", options);
-                            var result1 = await dialog1.Result;
+                            options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium };
+                            dialog = DialogService.Show<DeleteError>("", options);
+                            result = await dialog.Result;
                             item.DeleteDisabled = true;
-                            var index = VieweModels.FindIndex(x => x.StatusId == item.StatusId);
-                            VieweModels[index] = item;
+                            var index = StatusModels.FindIndex(x => x.StatusId == item.StatusId);
+                            StatusModels[index] = item;
                             StateHasChanged();
                             return;
                         }
@@ -130,12 +131,12 @@ namespace Ti.Pm.Web.Pages.Status
                         {
                             if (ex.InnerException != null)
                             {
-                                applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
+                                ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
                             }
                             else
                             {
                                 string? message = null;
-                                applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
+                                ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
                             }
                         }
                     }
@@ -145,12 +146,12 @@ namespace Ti.Pm.Web.Pages.Status
             {
                 if (ex.InnerException != null)
                 {
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
                 }
                 else
                 {
                     string? message = null;
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
                 }
             }
 
@@ -169,8 +170,8 @@ namespace Ti.Pm.Web.Pages.Status
                 {
                     StatusPmVieweModel returnModel = new StatusPmVieweModel();
                     returnModel = newItem;
-                    var newUser = Service.Create(returnModel);
-                    VieweModels.Add(newItem);
+                    var newUser = StatusPmService.Create(returnModel);
+                    StatusModels.Add(newItem);
                     StateHasChanged();
                 }
             }
@@ -178,12 +179,12 @@ namespace Ti.Pm.Web.Pages.Status
             {
                 if (ex.InnerException != null)
                 {
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
                 }
                 else
                 {
                     string? message = null;
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
                 }
             }
         }
@@ -200,17 +201,17 @@ namespace Ti.Pm.Web.Pages.Status
                 {
                     StatusPmVieweModel returnModel = new StatusPmVieweModel();
                     returnModel = (StatusPmVieweModel)result.Data;
-                    var newItem = Service.Update(returnModel);
-                    var index = VieweModels.FindIndex(x => x.StatusId == newItem.StatusId);
-                    newItem.DeleteDisabled = VieweModels[index].DeleteDisabled;
-                    VieweModels[index] = newItem;
+                    var newItem = StatusPmService.Update(returnModel);
+                    var index = StatusModels.FindIndex(x => x.StatusId == newItem.StatusId);
+                    newItem.DeleteDisabled = StatusModels[index].DeleteDisabled;
+                    StatusModels[index] = newItem;
                     StateHasChanged();
                 }
                 else
                 {
-                    var oldItem = Service.ReloadItem(item);
-                    var index = VieweModels.FindIndex(x => x.StatusId == oldItem.StatusId);
-                    VieweModels[index] = oldItem;
+                    var oldItem = StatusPmService.ReloadItem(item);
+                    var index = StatusModels.FindIndex(x => x.StatusId == oldItem.StatusId);
+                    StatusModels[index] = oldItem;
                     StateHasChanged();
                 }
 
@@ -219,12 +220,12 @@ namespace Ti.Pm.Web.Pages.Status
             {
                 if (ex.InnerException != null)
                 {
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
                 }
                 else
                 {
                     string? message = null;
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
                 }
             }
         }

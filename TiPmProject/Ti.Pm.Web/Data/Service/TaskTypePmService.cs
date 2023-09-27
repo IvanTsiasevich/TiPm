@@ -6,60 +6,58 @@ namespace Ti.Pm.Web.Data.Service
 {
     public class TaskTypePmService
     {
-        EFRepository<TaskTypePm> repoTaskType;
-        private static TiPmDbContext DbContext;
+        EFRepository<TaskTypePm> mRepoTaskType;
 
         public TaskTypePmService(TiPmDbContext context)
         {
-            repoTaskType = new EFRepository<TaskTypePm>(context);
-            DbContext = context;
+            mRepoTaskType = new EFRepository<TaskTypePm>(context);
         }
         public async Task<List<TaskTypePmVieweModel>> GetAll()
         {
-            var listItems = repoTaskType.Get();
-            var result = listItems.Select(x => Convert(x)).ToList();
-            result.Reverse();
-            return await Task.FromResult(result);
+            var dbModels = mRepoTaskType.Get();
+            var vieweModels = dbModels.Select(x => Convert(x)).ToList();
+            vieweModels.Reverse();
+            return await Task.FromResult(vieweModels);
         }
 
-        private static TaskTypePmVieweModel Convert(TaskTypePm r)
+        private static TaskTypePmVieweModel Convert(TaskTypePm dbModel)
         {
-            var item = new TaskTypePmVieweModel(r);
-            return item;
+            var vieweModel = new TaskTypePmVieweModel(dbModel);
+            return vieweModel;
         }
 
-        public TaskTypePmVieweModel Update(TaskTypePmVieweModel item)
+        public TaskTypePmVieweModel Update(TaskTypePmVieweModel vieweModel)
         {
-            var x = repoTaskType.FindById(item.TaskTypeId);
-            x.Title = item.Title;
-            return Convert(repoTaskType.Update(x));
+            var dbModel = mRepoTaskType.FindById(vieweModel.TaskTypeId);
+            dbModel.Title = vieweModel.Title;
+            return Convert(mRepoTaskType.Update(dbModel));
         }
-        public TaskTypePmVieweModel ReloadItem(TaskTypePmVieweModel item)
+        public TaskTypePmVieweModel ReloadItem(TaskTypePmVieweModel vieweModel)
         {
-            var x = repoTaskType.Reload(item.TaskTypeId);
-            if (x == null)
+            var dbModel = mRepoTaskType.Reload(vieweModel.TaskTypeId);
+            if (dbModel == null)
             {
                 return null;
             }
-            return Convert(x);
+            return Convert(dbModel);
         }
 
-        public void Delete(TaskTypePmVieweModel item)
+        public void Delete(TaskTypePmVieweModel vieweModel)
         {
-            var x = repoTaskType.FindById(item.TaskTypeId);
-            repoTaskType.Remove(x);
+            var dbModel = mRepoTaskType.FindById(vieweModel.TaskTypeId);
+            mRepoTaskType.Remove(dbModel);
         }
 
-        public TaskTypePmVieweModel Create(TaskTypePmVieweModel item)
+        public TaskTypePmVieweModel Create(TaskTypePmVieweModel vieweModel)
         {
-            var newItem = repoTaskType.Create(item.Item);
-            return Convert(newItem);
+            var newDbModel = mRepoTaskType.Create(vieweModel.DbModel);
+            return Convert(newDbModel);
         }
 
-        public List<TaskTypePmVieweModel> FilteringText(string message)
+        public List<TaskTypePmVieweModel> FilteringByTitle(string message)
         {
-            var filteredListLogs = repoTaskType.GetQuery().Where(x => (x.Title.Contains(message))).ToList();
-            var result = filteredListLogs.Select(Convert).ToList();
+            var filteredList = mRepoTaskType.GetQuery().Where(x => x.Title.ToLower().Contains(message.ToLower())).ToList();
+            var result = filteredList.Select(Convert).ToList();
             result.Reverse();
             return result;
         }

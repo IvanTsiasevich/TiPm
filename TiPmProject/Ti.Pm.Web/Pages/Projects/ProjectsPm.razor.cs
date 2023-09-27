@@ -11,23 +11,24 @@ namespace Ti.Pm.Web.Pages.Projects
 {
     public class ProjectsPmView : ComponentBase
     {
-        [Inject] protected IDialogService DialogService { get; set; }
-        [Inject] private LogApplicationService applicationErrorService { get; set; }
-        [Inject] private ProjectPmService Service { get; set; }
-        [Inject] private TaskPmService TaskService { get; set; }
-        public List<TaskPmVieweModel> TaskModels { get; set; } = new List<TaskPmVieweModel>();
-        public List<ProjectPmVieweModel> VieweModels { get; set; } = new List<ProjectPmVieweModel>();
+        public string mFilterTitle = "";
 
-        public string filterText = "";
+        [Inject] protected IDialogService DialogService { get; set; }
+        [Inject] private LogApplicationService ApplicationErrorService { get; set; }
+        [Inject] private ProjectPmService ProjectService { get; set; }
+        [Inject] private TaskPmService TaskService { get; set; }
+        public List<TaskPmVieweModel> TaskModels { get; set; } 
+        public List<ProjectPmVieweModel> ProjectVieweModels { get; set; } 
+
 
         protected override async Task OnInitializedAsync()
         {
             try
             {
-                VieweModels = await Service.GetAll();
+                ProjectVieweModels = await ProjectService.GetAll();
                 TaskModels = await TaskService.GetAll();
                 var UpdatedModels = new List<ProjectPmVieweModel>();
-                foreach (var model in VieweModels)
+                foreach (var model in ProjectVieweModels)
                 {
                     if (TaskModels.Any(x => x.ProjectId == model.ProjectId))
                     {
@@ -39,57 +40,57 @@ namespace Ti.Pm.Web.Pages.Projects
                         UpdatedModels.Add(model);
                     }
                 }
-                VieweModels = UpdatedModels;
+                ProjectVieweModels = UpdatedModels;
             }
             catch (Exception ex)
             {
                 if (ex.InnerException != null)
                 {
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
                 }
                 else
                 {
                     string? message = null;
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
                 }
             }
         }
 
-        public string FilterText
+        public string FilterByTitle
         {
-            get => filterText;
+            get => mFilterTitle;
 
             set
             {
-                filterText = value;
-                FiltersText();
+                mFilterTitle = value;
+                FiltersByTitle();
             }
         }
 
-        protected void FiltersText()
+        protected void FiltersByTitle()
         {
             try
             {
-                VieweModels = Service.FilteringText(filterText);
+                ProjectVieweModels = ProjectService.FilteringByTitle(mFilterTitle);
                 StateHasChanged();
             }
             catch (Exception ex)
             {
                 if (ex.InnerException != null)
                 {
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
                 }
                 else
                 {
                     string? message = null;
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
                 }
             }
 
         }
         protected void ClearSearch()
         {
-            FilterText = "";
+            FilterByTitle = "";
         }
 
         protected async Task DeleteDialogAsync(ProjectPmVieweModel item)
@@ -103,20 +104,20 @@ namespace Ti.Pm.Web.Pages.Projects
                 {
                     try
                     {
-                        Service.Delete(item);
-                        VieweModels.Remove(item);
+                        ProjectService.Delete(item);
+                        ProjectVieweModels.Remove(item);
                         StateHasChanged();
                     }
                     catch (Exception ex)
                     {
                         if (ex.InnerException is SqlException || ex is SqlException)
                         {
-                            var options1 = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium };
-                            var dialog1 = DialogService.Show<DeleteError>("", options);
-                            var result1 = await dialog1.Result;
+                            options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium };
+                            dialog = DialogService.Show<DeleteError>("", options);
+                            result = await dialog.Result;
                             item.DeleteDisabled = true;
-                            var index = VieweModels.FindIndex(x => x.ProjectId == item.ProjectId);
-                            VieweModels[index] = item;
+                            var index = ProjectVieweModels.FindIndex(x => x.ProjectId == item.ProjectId);
+                            ProjectVieweModels[index] = item;
                             StateHasChanged();
                             return;
                         }
@@ -124,12 +125,12 @@ namespace Ti.Pm.Web.Pages.Projects
                         {
                             if (ex.InnerException != null)
                             {
-                                applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
+                                ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
                             }
                             else
                             {
                                 string? message = null;
-                                applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
+                                ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
                             }
                         }
                     }
@@ -139,12 +140,12 @@ namespace Ti.Pm.Web.Pages.Projects
             {
                 if (ex.InnerException != null)
                 {
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
                 }
                 else
                 {
                     string? message = null;
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
                 }
             }
 
@@ -163,8 +164,8 @@ namespace Ti.Pm.Web.Pages.Projects
                 {
                     ProjectPmVieweModel returnModel = new ProjectPmVieweModel();
                     returnModel = newItem;
-                    var newUser = Service.Create(returnModel);
-                    VieweModels.Add(newItem);
+                    var newUser = ProjectService.Create(returnModel);
+                    ProjectVieweModels.Add(newItem);
                     StateHasChanged();
                 }
 
@@ -173,12 +174,12 @@ namespace Ti.Pm.Web.Pages.Projects
             {
                 if (ex.InnerException != null)
                 {
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
                 }
                 else
                 {
                     string? message = null;
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
                 }
             }
         }
@@ -195,17 +196,17 @@ namespace Ti.Pm.Web.Pages.Projects
                 {
                     ProjectPmVieweModel returnModel = new ProjectPmVieweModel();
                     returnModel = (ProjectPmVieweModel)result.Data;
-                    var newItem = Service.Update(returnModel);
-                    var index = VieweModels.FindIndex(x => x.ProjectId == newItem.ProjectId);
-                    newItem.DeleteDisabled = VieweModels[index].DeleteDisabled;
-                    VieweModels[index] = newItem;
+                    var newItem = ProjectService.Update(returnModel);
+                    var index = ProjectVieweModels.FindIndex(x => x.ProjectId == newItem.ProjectId);
+                    newItem.DeleteDisabled = ProjectVieweModels[index].DeleteDisabled;
+                    ProjectVieweModels[index] = newItem;
                     StateHasChanged();
                 }
                 else
                 {
-                    var oldItem = Service.ReloadItem(item);
-                    var index = VieweModels.FindIndex(x => x.ProjectId == oldItem.ProjectId);
-                    VieweModels[index] = oldItem;
+                    var oldItem = ProjectService.ReloadItem(item);
+                    var index = ProjectVieweModels.FindIndex(x => x.ProjectId == oldItem.ProjectId);
+                    ProjectVieweModels[index] = oldItem;
                     StateHasChanged();
                 }
 
@@ -214,12 +215,12 @@ namespace Ti.Pm.Web.Pages.Projects
             {
                 if (ex.InnerException != null)
                 {
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
                 }
                 else
                 {
                     string? message = null;
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
                 }
             }
         }

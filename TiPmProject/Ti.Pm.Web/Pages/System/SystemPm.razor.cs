@@ -7,98 +7,98 @@ namespace Ti.Pm.Web.Pages.System
 {
     public class SystemPmView : ComponentBase
     {
-        [Inject] private LogApplicationService applicationErrorService { get; set; }
+        public string mFilterErrorMsg = "";
+        public DateTime mFilterDate = DateTime.Now;
 
-        public List<ApplicationErrorViewModel> applicationErrorVieweModel = new List<ApplicationErrorViewModel>();
-        public string filterText = "";
-        public DateTime filterDate { get; set; }
+        [Inject] private LogApplicationService ApplicationErrorService { get; set; }
+        public List<ApplicationErrorViewModel> ApplicationErrorVieweModels { get; set; } 
 
         protected override async Task OnInitializedAsync()
         {
             try
             {
-                FilterDate = DateTime.Now;
-                applicationErrorVieweModel = await applicationErrorService.GetAll();
+                ApplicationErrorVieweModels = await ApplicationErrorService.GetAll();
             }
             catch (Exception ex)
             {
                 if (ex.InnerException != null)
                 {
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
                 }
                 else
                 {
                     string? message = null;
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
                 }
             }
 
         }
-        public DateTime FilterDate
+        public DateTime FilterByDate
         {
-            get => filterDate;
+            get => mFilterDate;
 
             set
             {
-                filterDate = value;
-                Filter();
+                mFilterDate = value;
+                FiltersByDate();
             }
         }
-        public string FilterText
+        public string FilterByErrorMsg
         {
-            get => filterText;
+            get => mFilterErrorMsg;
 
             set
             {
-                filterText = value;
-                FiltersText();
+                mFilterErrorMsg = value;
+                FiltersByErrorMsg();
             }
         }
-        protected void Filter()
+        protected void FiltersByDate()
         {
             try
             {
-                applicationErrorVieweModel = applicationErrorService.Filtering(filterDate);
+                ApplicationErrorVieweModels = ApplicationErrorService.FilteringByDate(mFilterDate);
                 StateHasChanged();
             }
             catch (Exception ex)
             {
                 if (ex.InnerException != null)
                 {
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
                 }
                 else
                 {
                     string? message = null;
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
                 }
             }
 
         }
-        protected void FiltersText()
+        protected void FiltersByErrorMsg()
         {
             try
             {
-                applicationErrorVieweModel = applicationErrorService.FilteringError(filterText);
+                ApplicationErrorVieweModels = ApplicationErrorService.FilteringByErrorMsg(mFilterErrorMsg);
                 StateHasChanged();
             }
             catch (Exception ex)
             {
                 if (ex.InnerException != null)
                 {
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
                 }
                 else
                 {
                     string? message = null;
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
+                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
                 }
             }
 
         }
         protected void ClearSearch()
         {
-            FilterText = "";
+            FilterByErrorMsg = "";
+            mFilterDate = DateTime.Now;
         }
     }
 }

@@ -1,23 +1,21 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Ti.Pm.PmDb.Model;
-using Ti.Pm.Web.Pages.TaskType;
 
 namespace Ti.Pm.Web.Data.ViewModel
 {
     public class TaskTypePmVieweModel
     {
-        private TaskTypePm _item;
-        public TaskTypePm Item => _item;
+        private TaskTypePm mDbModel;
+        public TaskTypePm DbModel => mDbModel;
 
         public TaskTypePmVieweModel()
         {
-            _item = new TaskTypePm();
-
+            mDbModel = new TaskTypePm();
         }
 
         public TaskTypePmVieweModel(TaskTypePm item)
         {
-            _item = item;
+            mDbModel = item;
         }
         public bool DeleteDisabled
         {
@@ -25,21 +23,21 @@ namespace Ti.Pm.Web.Data.ViewModel
         }
         public int TaskTypeId
         {
-            get => _item.TaskTypeId;
-            set => _item.TaskTypeId = value;
+            get => mDbModel.TaskTypeId;
+            set => mDbModel.TaskTypeId = value;
         }
 
         [Required]
         public string Title
         {
-            get => _item.Title;
-            set => _item.Title = value;
+            get => mDbModel.Title;
+            set => mDbModel.Title = value;
         }
 
         public string? ChangeLogJson
         {
-            get => _item.ChangeLogJson;
-            set => _item.ChangeLogJson = value;
+            get => mDbModel.ChangeLogJson;
+            set => mDbModel.ChangeLogJson = value;
         }
     }
 }

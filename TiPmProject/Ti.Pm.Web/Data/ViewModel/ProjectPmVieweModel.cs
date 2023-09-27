@@ -1,22 +1,21 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Ti.Pm.PmDb.Model;
-using Ti.Pm.Web.Pages.Projects;
 
 namespace Ti.Pm.Web.Data.ViewModel
 {
     public class ProjectPmVieweModel
     {
-        private ProjectPm _item;
-        public ProjectPm Item => _item;
+        private ProjectPm mDbModel;
+        public ProjectPm DbModel => mDbModel;
 
         public ProjectPmVieweModel()
         {
-            _item = new ProjectPm();
+            mDbModel = new ProjectPm();
         }
 
         public ProjectPmVieweModel(ProjectPm item)
         {
-            _item = item;
+            mDbModel = item;
         }
         public bool DeleteDisabled
         {
@@ -24,21 +23,21 @@ namespace Ti.Pm.Web.Data.ViewModel
         }
         public int ProjectId
         {
-            get => _item.ProjectId;
-            set => _item.ProjectId = value;
+            get => mDbModel.ProjectId;
+            set => mDbModel.ProjectId = value;
         }
 
         [Required]
         public string Title
         {
-            get => _item.Title;
-            set => _item.Title = value;
+            get => mDbModel.Title;
+            set => mDbModel.Title = value;
         }
        
         public string? ChangeLogJson
         {
-            get => _item.ChangeLogJson;
-            set => _item.ChangeLogJson = value;
+            get => mDbModel.ChangeLogJson;
+            set => mDbModel.ChangeLogJson = value;
         }
     }
 }
