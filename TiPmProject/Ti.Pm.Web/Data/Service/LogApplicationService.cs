@@ -55,6 +55,21 @@ namespace Ti.Pm.Web.Data.Service
             result.Reverse();
             return result;
         }
+
+        public void Cathcer(Exception ex)
+        {            
+            {
+                if (ex.InnerException != null)
+                {
+                    Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
+                }
+                else
+                {
+                    string? message = null;
+                    Create(ex.Message, ex.StackTrace, DateTime.Now, message);
+                }
+            }
+        }
     }
 }
 

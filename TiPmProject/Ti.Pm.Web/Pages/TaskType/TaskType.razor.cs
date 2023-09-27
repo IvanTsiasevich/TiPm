@@ -44,19 +44,10 @@ namespace Ti.Pm.Web.Pages.TaskType
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null)
-                {
-                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
-                }
-                else
-                {
-                    string? message = null;
-                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
-                }
+                ApplicationErrorService.Cathcer(ex);
             }
-
         }
-
+       
         public string FilterByTitle
         {
             get => mFilterTitle;
@@ -76,15 +67,7 @@ namespace Ti.Pm.Web.Pages.TaskType
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null)
-                {
-                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
-                }
-                else
-                {
-                    string? message = null;
-                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
-                }
+                ApplicationErrorService.Cathcer(ex);
             }
 
         }
@@ -123,15 +106,7 @@ namespace Ti.Pm.Web.Pages.TaskType
                         }
                         else
                         {
-                            if (ex.InnerException != null)
-                            {
-                                ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
-                            }
-                            else
-                            {
-                                string? message = null;
-                                ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
-                            }
+                            ApplicationErrorService.Cathcer(ex);
                         }
                     }
                   
@@ -173,15 +148,7 @@ namespace Ti.Pm.Web.Pages.TaskType
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null)
-                {
-                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
-                }
-                else
-                {
-                    string? message = null;
-                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
-                }
+                ApplicationErrorService.Cathcer(ex);
             }
         }
 
@@ -214,15 +181,7 @@ namespace Ti.Pm.Web.Pages.TaskType
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null)
-                {
-                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
-                }
-                else
-                {
-                    string? message = null;
-                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
-                }
+                ApplicationErrorService.Cathcer(ex);
             }
         }
     }

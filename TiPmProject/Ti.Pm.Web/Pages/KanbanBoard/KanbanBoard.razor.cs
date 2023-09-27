@@ -17,10 +17,10 @@ namespace Ti.Pm.Web.Pages.KanbanBoard
 
         public List<StatusPmVieweModel> mSelectors = new();
 
-        public MudDropContainer<DropItem> mContainer;
+        public MudDropContainer<DropItem> mContainer = new();
 
         [Inject] protected IDialogService DialogService { get; set; }
-        [Inject] private LogApplicationService applicationErrorService { get; set; }
+        [Inject] private LogApplicationService ApplicationErrorService { get; set; }
         [Inject] private TaskPmService TaskPmService { get; set; }
         [Inject] public TaskTypePmService TaskTypePmService { get; set; }
         [Inject] public ProjectPmService ProjectPmService { get; set; }
@@ -55,17 +55,8 @@ namespace Ti.Pm.Web.Pages.KanbanBoard
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null)
-                {
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
-                }
-                else
-                {
-                    string? message = null;
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
-                }
+                ApplicationErrorService.Cathcer(ex);
             }
-
         }
 
         protected void GrandFilter()
@@ -93,15 +84,7 @@ namespace Ti.Pm.Web.Pages.KanbanBoard
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null)
-                {
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
-                }
-                else
-                {
-                    string? message = null;
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
-                }
+                ApplicationErrorService.Cathcer(ex);
             }
 
         }
@@ -153,15 +136,7 @@ namespace Ti.Pm.Web.Pages.KanbanBoard
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null)
-                {
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
-                }
-                else
-                {
-                    string? message = null;
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
-                }
+                ApplicationErrorService.Cathcer(ex);
             }
 
         }
@@ -178,15 +153,7 @@ namespace Ti.Pm.Web.Pages.KanbanBoard
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null)
-                {
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
-                }
-                else
-                {
-                    string? message = null;
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
-                }
+                ApplicationErrorService.Cathcer(ex);
             }
 
         }
@@ -201,15 +168,7 @@ namespace Ti.Pm.Web.Pages.KanbanBoard
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null)
-                {
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
-                }
-                else
-                {
-                    string? message = null;
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
-                }
+                ApplicationErrorService.Cathcer(ex);
             }
 
         }
@@ -237,15 +196,7 @@ namespace Ti.Pm.Web.Pages.KanbanBoard
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null)
-                {
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
-                }
-                else
-                {
-                    string? message = null;
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
-                }
+                ApplicationErrorService.Cathcer(ex);
             }
         }
 
@@ -280,15 +231,7 @@ namespace Ti.Pm.Web.Pages.KanbanBoard
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null)
-                {
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
-                }
-                else
-                {
-                    string? message = null;
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
-                }
+                ApplicationErrorService.Cathcer(ex);
             }
         }
 
@@ -302,15 +245,7 @@ namespace Ti.Pm.Web.Pages.KanbanBoard
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null)
-                {
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
-                }
-                else
-                {
-                    string? message = null;
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
-                }
+                ApplicationErrorService.Cathcer(ex);
             }
         }
 
@@ -328,15 +263,7 @@ namespace Ti.Pm.Web.Pages.KanbanBoard
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null)
-                {
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
-                }
-                else
-                {
-                    string? message = null;
-                    applicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
-                }
+                ApplicationErrorService.Cathcer(ex);
             }
 
         }
