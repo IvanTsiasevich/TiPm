@@ -5,7 +5,7 @@ namespace Ti.Pm.PmDb.Model
 {
     [Table("Status")]
 
-    public class StatusPm
+    public class StatusPm : IChangeLog
     {
         [Key]
         public int StatusId { get; set; }

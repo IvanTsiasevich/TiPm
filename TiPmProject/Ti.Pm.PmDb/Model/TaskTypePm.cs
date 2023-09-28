@@ -5,7 +5,7 @@ namespace Ti.Pm.PmDb.Model
 {
     [Table("TaskType")]
 
-    public class TaskTypePm
+    public class TaskTypePm : IChangeLog
     {
         [Key]
         public int TaskTypeId { get; set; }

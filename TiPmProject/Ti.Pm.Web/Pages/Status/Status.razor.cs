@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using MudBlazor;
+using System.Text.Json;
+using Ti.Pm.PmDb.Model;
 using Ti.Pm.Web.Data.Service;
 using Ti.Pm.Web.Data.ViewModel;
-using Ti.Pm.Web.Pages.Projects.Edit;
 using Ti.Pm.Web.Pages.Status.Edit;
-using Ti.Pm.Web.Pages.TaskType.Edit;
 using Ti.Pm.Web.Shared;
 
 namespace Ti.Pm.Web.Pages.Status
@@ -181,5 +180,22 @@ namespace Ti.Pm.Web.Pages.Status
                 ApplicationErrorService.Cathcer(ex);
             }
         }
-    }
+        public async Task ShowChangeLogDialog(StatusPmVieweModel item)
+        {
+            try
+            {
+                var changeLogJson = string.IsNullOrEmpty(item.ChangeLogJson) ? new List<ChangeLog>() : JsonSerializer.Deserialize<List<ChangeLog>>(item.ChangeLogJson);
+                var options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium };
+                var parameters = new DialogParameters<ChangeLogModal> { { x => x.ChangeLog, changeLogJson } };
+                var dialog = DialogService.Show<ChangeLogModal>("", parameters, options);
+                var result = await dialog.Result;
+
+            }
+            catch (Exception ex)
+            {
+                ApplicationErrorService.Cathcer(ex);
+            }
+        }
+    }  
 }
+

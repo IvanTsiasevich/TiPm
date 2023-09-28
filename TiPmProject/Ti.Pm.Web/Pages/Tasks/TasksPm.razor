@@ -52,6 +52,7 @@
         <MudTd DataLabel="TaskTypeId" Style="width: 10%">@TaskTypePmVieweModels.FirstOrDefault(x=>x.TaskTypeId ==item.TaskTypeId).Title</MudTd>
         <MudTd Style="text-align:end">
             <button class="btn" @onclick="()=>EditItemDialog(item)"><i class="fa fa-folder"></i></button>
+            <button class="btn" @onclick="()=>ShowChangeLogDialog(item)"><i class="fa fa-list"></i></button>
             <button class="btn" @onclick="()=>DeleteDialogAsync(item)">
                 <i class="fa fa-trash"></i>
             </button>

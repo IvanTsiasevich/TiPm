@@ -6,7 +6,7 @@ namespace Ti.Pm.PmDb.Model
 {
     [Table("Project")]
 
-    public class ProjectPm
+    public class ProjectPm : IChangeLog
     {
         [Key]
         public int ProjectId { get; set; }

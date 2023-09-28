@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Ti.Pm.PmDb.Model
 {
     [Table("LogApplicationError")]
-    public class ApplicationError
+    public class ApplicationError 
     {
         [Key]
         public int LogApplicationErrorId { get; set; }

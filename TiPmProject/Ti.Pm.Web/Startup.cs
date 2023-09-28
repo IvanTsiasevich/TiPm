@@ -32,6 +32,7 @@ namespace Ti.Pm.Web
             services.AddServerSideBlazor().AddCircuitOptions(options => { options.DetailedErrors = true; });         
             services.AddControllersWithViews();
             services.AddHttpContextAccessor();
+            services.AddLogging();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddHttpClient();
@@ -43,10 +44,9 @@ namespace Ti.Pm.Web
                 });
                 return client;
             });
-           
+
 
             services.AddDbContext<TiPmDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TiPmDbContext")));           
-            //services.AddLogging();
             services.AddScoped<LogApplicationService>();
             services.AddScoped<ProjectPmService>();
             services.AddScoped<TaskTypePmService>();

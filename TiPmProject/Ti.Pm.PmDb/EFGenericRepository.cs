@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 using Ti.Pm.PmDb.Model;
 
 namespace Ti.Pm.PmDb
@@ -7,6 +8,7 @@ namespace Ti.Pm.PmDb
     {
         private DbContext _context;
         private DbSet<TEntity> _dbSet;
+        private IChangeLog IChangeLog ;
 
         public EFRepository(DbContext context)
         {
@@ -40,6 +42,10 @@ namespace Ti.Pm.PmDb
       
         public TEntity Create(TEntity item)
         {
+            if (item is IChangeLog)
+            {
+                FillChangeLogJson((IChangeLog)item, "Create");
+            }
             var itemNew = _dbSet.Add(item).Entity;
             _context.SaveChanges();
 
@@ -64,7 +70,11 @@ namespace Ti.Pm.PmDb
 
            
         public TEntity Update(TEntity item)
-        {          
+        {
+            if (item is IChangeLog)
+            {
+                FillChangeLogJson((IChangeLog)item, "Update");
+            }
             _context.Entry(item).State = EntityState.Modified;
             _context.SaveChanges();
 
@@ -87,6 +97,24 @@ namespace Ti.Pm.PmDb
                 _context.Entry(item).State = EntityState.Detached;
                 _context.SaveChanges();
                 throw ex;
+            }
+        }
+        private void FillChangeLogJson(IChangeLog item, string operation)
+        {
+            var changeLogJson = string.IsNullOrEmpty(item.ChangeLogJson) ? new List<ChangeLog>() : JsonSerializer.Deserialize<List<ChangeLog>>(item.ChangeLogJson);
+            changeLogJson.Add(new ChangeLog()
+            {
+                Operation = String.IsNullOrEmpty(operation) ? "Update" : operation,
+                Date = DateTime.Now
+            });
+            item.ChangeLogJson = JsonSerializer.Serialize(changeLogJson);
+
+            while (item.ChangeLogJson.Length > 400)
+            {
+                var firstRecord = changeLogJson.First();
+                changeLogJson.Remove(firstRecord);
+
+                item.ChangeLogJson = JsonSerializer.Serialize(changeLogJson);
             }
         }
     }

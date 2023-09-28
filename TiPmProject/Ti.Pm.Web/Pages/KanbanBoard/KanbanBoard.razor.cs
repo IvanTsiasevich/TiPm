@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.IdentityModel.Tokens;
 using MudBlazor;
+using System.Text.Json;
+using Ti.Pm.PmDb.Model;
 using Ti.Pm.Web.Data.Service;
 using Ti.Pm.Web.Data.ViewModel;
 using Ti.Pm.Web.Pages.Tasks.Edit;
+using Ti.Pm.Web.Shared;
 
 namespace Ti.Pm.Web.Pages.KanbanBoard
 {
@@ -29,9 +32,9 @@ namespace Ti.Pm.Web.Pages.KanbanBoard
         public List<TaskTypePmVieweModel> TaskTypePmVieweModels { get; set; }
         public List<ProjectPmVieweModel> ProjectPmVieweModels { get; set; }
         public List<StatusPmVieweModel> StatusPmVieweModels { get; set; }
-        public List<TaskPmVieweModel> TaskPmVieweModels { get; set; }  
+        public List<TaskPmVieweModel> TaskPmVieweModels { get; set; }
 
-      
+
 
         protected override async Task OnInitializedAsync()
         {
@@ -249,11 +252,6 @@ namespace Ti.Pm.Web.Pages.KanbanBoard
             }
         }
 
-        public class DropItem
-        {
-            public TaskPmVieweModel Name { get; init; }
-            public StatusPmVieweModel Selector { get; set; }
-        }
         private void RefreshContainer()
         {
             try
@@ -266,6 +264,28 @@ namespace Ti.Pm.Web.Pages.KanbanBoard
                 ApplicationErrorService.Cathcer(ex);
             }
 
+        }
+        public async Task ShowChangeLogDialog(TaskPmVieweModel model)
+        {
+            try
+            {
+                var item = TaskPmService.FindById(model);
+                var changeLogJson = string.IsNullOrEmpty(item.ChangeLogJson) ? new List<ChangeLog>() : JsonSerializer.Deserialize<List<ChangeLog>>(item.ChangeLogJson);
+                var options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium };
+                var parameters = new DialogParameters<ChangeLogModal> { { x => x.ChangeLog, changeLogJson } };
+                var dialog = DialogService.Show<ChangeLogModal>("", parameters, options);
+                var result = await dialog.Result;
+
+            }
+            catch (Exception ex)
+            {
+                ApplicationErrorService.Cathcer(ex);
+            }
+        }
+        public class DropItem
+        {
+            public TaskPmVieweModel Name { get; init; }
+            public StatusPmVieweModel Selector { get; set; }
         }
     }
 }

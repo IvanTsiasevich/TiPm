@@ -1,0 +1,41 @@
+﻿@using Ti.Pm.PmDb.Model;
+@inherits ChangeLogModalViewe
+
+<MudDialog Style="width: 20%;">
+    <DialogContent>
+        <div class="d-flex justify-content-between">
+            <MudText Typo="Typo.h6">
+                Change log
+            </MudText>
+            <div class="d-flex" style="justify-content: flex-end">
+                <MudButton Variant="Variant.Outlined" style="margin-bottom:14px;margin-left: 10px;" @onclick="Cancel">x</MudButton>
+            </div>
+        </div>
+        <MudTable Items="@ChangeLog" SortLabel="Sort" FixedHeader="true" Height="" Style="width: 100%" Class="mud-table-custom">
+            <HeaderContent>
+                <MudTh>
+                    <MudTableSortLabel SortBy="new Func<ChangeLog, object>(x=>x.Date)">
+                        Date
+                    </MudTableSortLabel>
+                </MudTh>
+                <MudTh>
+                    <MudTableSortLabel SortBy="new Func<ChangeLog, object>(x=>x.Operation)">
+                        Title
+                    </MudTableSortLabel>
+                </MudTh>
+            </HeaderContent>
+            <RowTemplate Context="item">
+                <MudTd DataLabel="Date" >@item.Date</MudTd>
+                <MudTd DataLabel="Operation" >@item.Operation</MudTd>
+            </RowTemplate>           
+        </MudTable>
+
+
+    </DialogContent>
+</MudDialog>
+
+
+
+
+
+

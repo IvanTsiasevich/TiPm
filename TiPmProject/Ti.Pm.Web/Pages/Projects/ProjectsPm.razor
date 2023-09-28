@@ -30,6 +30,7 @@
         <MudTd DataLabel="Title" Style="width: 80%">@item.Title</MudTd>
         <MudTd Style="text-align:end">
             <button class="btn" @onclick="()=>EditItemDialog(item)"><i class="fa fa-folder"></i></button>
+            <button class="btn" @onclick="()=>ShowChangeLogDialog(item)"><i class="fa fa-list"></i></button>
             @if (item.DeleteDisabled is false)
             {
                 <button class="btn" @onclick="()=>DeleteDialogAsync(item)">

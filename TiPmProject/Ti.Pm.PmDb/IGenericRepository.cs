@@ -7,5 +7,6 @@
         IEnumerable<TEntity> Get();
         IQueryable<TEntity> GetQuery();       
         void Remove(TEntity item);      
+           
     }
 }

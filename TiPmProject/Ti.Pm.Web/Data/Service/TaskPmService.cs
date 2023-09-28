@@ -57,7 +57,10 @@ namespace Ti.Pm.Web.Data.Service
             var newDbModel = mRepoTask.Create(vieweModel.DbModel);
             return Convert(newDbModel);
         }
-
+        public TaskPmVieweModel FindById(TaskPmVieweModel item)
+        {
+            return Convert(mRepoTask.FindById(item.TaskId));
+        }
         public List<TaskPmVieweModel> FilteringByTitle(string message)
         {
             var filteredList = mRepoTask.GetQuery().Where(x => x.Title.ToLower().Contains(message.ToLower())).ToList();
