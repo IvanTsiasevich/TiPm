@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using System.IO;
 using System.Text.Json;
 using Ti.Pm.PmDb.Model;
 using Ti.Pm.Web.Data.Service;
+using Ti.Pm.Web.Data.Services;
 using Ti.Pm.Web.Data.ViewModel;
 using Ti.Pm.Web.Pages.Tasks.Edit;
-using Ti.Pm.Web.Pages.TaskType.Edit;
 using Ti.Pm.Web.Shared;
 
 namespace Ti.Pm.Web.Pages.Tasks
@@ -15,18 +14,18 @@ namespace Ti.Pm.Web.Pages.Tasks
     {
         public string mFilterTitle = "";
 
+        public List<TaskTypePmVieweModel> TaskTypePmVieweModels { get; set; }
+        public List<ProjectPmVieweModel> ProjectPmVieweModels { get; set; }
+        public List<StatusPmVieweModel> StatusPmVieweModels { get; set; }
+        public List<TaskPmVieweModel> TaskPmVieweModels { get; set; }
+
         [Inject] protected IDialogService DialogService { get; set; }
+        [Inject] protected CreateDialogOptionService DialogOptionService { get; set; }
         [Inject] private LogApplicationService ApplicationErrorService { get; set; }
         [Inject] private TaskPmService TaskPmService { get; set; }
         [Inject] public TaskTypePmService TaskTypePmService { get; set; }
         [Inject] public ProjectPmService ProjectPmService { get; set; }
         [Inject] public StatusPmService StatusPmService { get; set; }
-
-        public List<TaskTypePmVieweModel> TaskTypePmVieweModels { get; set; }
-        public List<ProjectPmVieweModel> ProjectPmVieweModels { get; set; }
-        public List<StatusPmVieweModel> StatusPmVieweModels { get; set; }
-        public List<TaskPmVieweModel> TaskPmVieweModels { get; set; } 
-
 
         protected override async Task OnInitializedAsync()
         {
@@ -39,7 +38,7 @@ namespace Ti.Pm.Web.Pages.Tasks
             }
             catch (Exception ex)
             {
-                ApplicationErrorService.Cathcer(ex);
+                ApplicationErrorService.ErrorCathcer(ex);
             }
 
         }
@@ -64,7 +63,7 @@ namespace Ti.Pm.Web.Pages.Tasks
             }
             catch (Exception ex)
             {
-                ApplicationErrorService.Cathcer(ex);
+                ApplicationErrorService.ErrorCathcer(ex);
             }
 
         }
@@ -77,7 +76,7 @@ namespace Ti.Pm.Web.Pages.Tasks
         {
             try
             {
-                var options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium };
+                var options = DialogOptionService.CreateDialogOptions();
                 var dialog = DialogService.Show<DeleteModal>("", options);
                 var result = await dialog.Result;
                 if (!result.Canceled)
@@ -90,13 +89,13 @@ namespace Ti.Pm.Web.Pages.Tasks
                     }
                     catch (Exception ex)
                     {
-                        ApplicationErrorService.Cathcer(ex);
+                        ApplicationErrorService.ErrorCathcer(ex);
                     }
                 }
             }
             catch (Exception ex)
             {
-                ApplicationErrorService.Cathcer(ex);
+                ApplicationErrorService.ErrorCathcer(ex);
             }
 
         }
@@ -105,56 +104,50 @@ namespace Ti.Pm.Web.Pages.Tasks
         {
             try
             {
-                var newItem = new TaskPmVieweModel();
-                var options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium };
-                var parameters = new DialogParameters<EditTaskPm> { { x => x.TaskPmVieweModel, newItem } };
+                var newModel = new TaskPmVieweModel();
+                var options = DialogOptionService.CreateDialogOptions();
+                //передача параметра, стандартная конструкция МудБлазора
+                var parameters = new DialogParameters<EditTaskPm> { { x => x.TaskPmVieweModel, newModel } };
                 var dialog = DialogService.Show<EditTaskPm>("", parameters, options);
                 var result = await dialog.Result;
                 if (!result.Canceled)
                 {
-                    TaskPmVieweModel returnModel = new TaskPmVieweModel();
-                    returnModel = newItem;
-                    var newUser = TaskPmService.Create(returnModel);
-                    TaskPmVieweModels.Add(newItem);
+                    TaskPmService.Create(newModel);
+                    TaskPmVieweModels.Add(newModel);
                     StateHasChanged();
                 }
-
             }
             catch (Exception ex)
             {
-                ApplicationErrorService.Cathcer(ex);
+                ApplicationErrorService.ErrorCathcer(ex);
             }
         }
 
-        public async Task EditItemDialog(TaskPmVieweModel item)
+        public async Task EditItemDialog(TaskPmVieweModel updateModel)
         {
             try
             {
-                var options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium };
-                var parameters = new DialogParameters<EditTaskPm> { { x => x.TaskPmVieweModel, item } };
+                var options = DialogOptionService.CreateDialogOptions();
+                //передача параметра, стандартная конструкция МудБлазора
+                var parameters = new DialogParameters<EditTaskPm> { { x => x.TaskPmVieweModel, updateModel } };
                 var dialog = DialogService.Show<EditTaskPm>("", parameters, options);
                 var result = await dialog.Result;
                 if (!result.Canceled)
                 {
-                    TaskPmVieweModel returnModel = new TaskPmVieweModel();
-                    returnModel = (TaskPmVieweModel)result.Data;
-                    var newItem = TaskPmService.Update(returnModel);
-                    var index = TaskPmVieweModels.FindIndex(x => x.TaskTypeId == newItem.TaskTypeId);
-                    TaskPmVieweModels[index] = newItem;
+                    var newItem = TaskPmService.Update(updateModel);                   
                     StateHasChanged();
                 }
                 else
                 {
-                    var oldItem = TaskPmService.ReloadItem(item);
+                    var oldItem = TaskPmService.ReloadItem(updateModel);
                     var index = TaskPmVieweModels.FindIndex(x => x.TaskTypeId == oldItem.TaskTypeId);
                     TaskPmVieweModels[index] = oldItem;
                     StateHasChanged();
                 }
-
             }
             catch (Exception ex)
             {
-                ApplicationErrorService.Cathcer(ex);
+                ApplicationErrorService.ErrorCathcer(ex);
             }
         }
         public async Task ShowChangeLogDialog(TaskPmVieweModel item)
@@ -162,15 +155,13 @@ namespace Ti.Pm.Web.Pages.Tasks
             try
             {
                 var changeLogJson = string.IsNullOrEmpty(item.ChangeLogJson) ? new List<ChangeLog>() : JsonSerializer.Deserialize<List<ChangeLog>>(item.ChangeLogJson);
-                var options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium };
+                var options = DialogOptionService.CreateDialogOptions();
                 var parameters = new DialogParameters<ChangeLogModal> { { x => x.ChangeLog, changeLogJson } };
-                var dialog = DialogService.Show<ChangeLogModal>("", parameters, options);
-                var result = await dialog.Result;
-
+                DialogService.Show<ChangeLogModal>("", parameters, options);
             }
             catch (Exception ex)
             {
-                ApplicationErrorService.Cathcer(ex);
+                ApplicationErrorService.ErrorCathcer(ex);
             }
         }
     }

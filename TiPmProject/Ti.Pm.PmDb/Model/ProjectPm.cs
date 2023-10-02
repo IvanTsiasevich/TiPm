@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations;
 namespace Ti.Pm.PmDb.Model
 {
     [Table("Project")]
-
     public class ProjectPm : IChangeLog
     {
         [Key]

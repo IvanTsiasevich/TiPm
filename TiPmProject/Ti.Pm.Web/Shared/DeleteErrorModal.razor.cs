@@ -5,8 +5,7 @@ namespace Ti.Pm.Web.Shared
 {
     public class DeleteErrorView : ComponentBase
     {
-        [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-       
+        [CascadingParameter] MudDialogInstance MudDialog { get; set; }       
         public void Cancel()
         {
             MudDialog.Cancel();

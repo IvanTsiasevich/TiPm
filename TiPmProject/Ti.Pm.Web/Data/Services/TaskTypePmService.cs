@@ -27,10 +27,8 @@ namespace Ti.Pm.Web.Data.Service
         }
 
         public TaskTypePmVieweModel Update(TaskTypePmVieweModel vieweModel)
-        {
-            var dbModel = mRepoTaskType.FindById(vieweModel.TaskTypeId);
-            dbModel.Title = vieweModel.Title;
-            return Convert(mRepoTaskType.Update(dbModel));
+        {           
+            return Convert(mRepoTaskType.Update(vieweModel.DbModel));
         }
         public TaskTypePmVieweModel ReloadItem(TaskTypePmVieweModel vieweModel)
         {

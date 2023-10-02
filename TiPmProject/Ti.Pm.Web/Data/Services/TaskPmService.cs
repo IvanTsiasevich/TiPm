@@ -1,6 +1,7 @@
 ﻿using Ti.Pm.PmDb.Model;
 using Ti.Pm.PmDb;
 using Ti.Pm.Web.Data.ViewModel;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Ti.Pm.Web.Data.Service
 {
@@ -27,14 +28,8 @@ namespace Ti.Pm.Web.Data.Service
         }
 
         public TaskPmVieweModel Update(TaskPmVieweModel vieweModel)
-        {
-            var dbModel = mRepoTask.FindById(vieweModel.TaskId);
-            dbModel.StatusId = vieweModel.StatusId;
-            dbModel.ProjectId = vieweModel.ProjectId;
-            dbModel.TaskTypeId = vieweModel.TaskTypeId;
-            dbModel.Title = vieweModel.Title;
-            dbModel.Description = vieweModel.Description;
-            return Convert(mRepoTask.Update(dbModel));
+        {            
+            return Convert(mRepoTask.Update(vieweModel.DbModel));
         }
         public TaskPmVieweModel ReloadItem(TaskPmVieweModel vieweModel)
         {
@@ -64,17 +59,52 @@ namespace Ti.Pm.Web.Data.Service
         public List<TaskPmVieweModel> FilteringByTitle(string message)
         {
             var filteredList = mRepoTask.GetQuery().Where(x => x.Title.ToLower().Contains(message.ToLower())).ToList();
-            var result = filteredList.Select(Convert).ToList();
+            var result = filteredList.Select(x=>Convert(x)).ToList();
             result.Reverse();
             return result;
         }
        
-        public List<TaskPmVieweModel> FilteringByProject(int progectId)
+        public List<TaskPmVieweModel> FilteringByProject(int projectId)
         {
-            var filteredList = mRepoTask.GetQuery().Where(x => (x.ProjectId == progectId)).ToList();
+            var filteredList = mRepoTask.GetQuery().Where(x => (x.ProjectId == projectId)).ToList();
             var result = filteredList.Select(Convert).ToList();
             result.Reverse();
             return result;
+        }
+
+        public bool CheckConnection(int foregenKey, string typeOfCheck)
+        {
+            switch (typeOfCheck)
+            {
+                case "project":
+                    if (mRepoTask.GetQuery().Where(x => (x.ProjectId == foregenKey)).ToList().IsNullOrEmpty())
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                case "status":
+                    if (mRepoTask.GetQuery().Where(x => (x.StatusId == foregenKey)).ToList().IsNullOrEmpty())
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                case "taskType":
+                    if (mRepoTask.GetQuery().Where(x => (x.TaskTypeId == foregenKey)).ToList().IsNullOrEmpty())
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+            }           
+            return true;
         }
     }
 }

@@ -26,11 +26,8 @@ namespace Ti.Pm.Web.Data.Service
         }
 
         public StatusPmVieweModel Update(StatusPmVieweModel vieweModel)
-        {
-            var dbModel = mRepoStatusPm.FindById(vieweModel.StatusId);
-            dbModel.Title = vieweModel.Title;
-            dbModel.OrderId = vieweModel.OrderId;
-            return Convert(mRepoStatusPm.Update(dbModel));
+        {          
+            return Convert(mRepoStatusPm.Update(vieweModel.DbModel));
         }
         public StatusPmVieweModel ReloadItem(StatusPmVieweModel vieweModel)
         {

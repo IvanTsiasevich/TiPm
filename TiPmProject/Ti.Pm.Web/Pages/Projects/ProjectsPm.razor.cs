@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Options;
 using MudBlazor;
-using System.Linq;
 using System.Text.Json;
 using Ti.Pm.PmDb.Model;
 using Ti.Pm.Web.Data.Service;
+using Ti.Pm.Web.Data.Services;
 using Ti.Pm.Web.Data.ViewModel;
 using Ti.Pm.Web.Pages.Projects.Edit;
 using Ti.Pm.Web.Shared;
@@ -15,38 +16,41 @@ namespace Ti.Pm.Web.Pages.Projects
     {
         public string mFilterTitle = "";
 
+        public List<TaskPmVieweModel> TaskModels { get; set; }
+        public List<ProjectPmVieweModel> ProjectVieweModels { get; set; }
+
         [Inject] protected IDialogService DialogService { get; set; }
+        [Inject] protected CreateDialogOptionService DialogOptionService { get; set; }
         [Inject] private LogApplicationService ApplicationErrorService { get; set; }
         [Inject] private ProjectPmService ProjectService { get; set; }
-        [Inject] private TaskPmService TaskService { get; set; }
-        public List<TaskPmVieweModel> TaskModels { get; set; } 
-        public List<ProjectPmVieweModel> ProjectVieweModels { get; set; } 
-
+        [Inject] private TaskPmService TaskPmService { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             try
             {
                 ProjectVieweModels = await ProjectService.GetAll();
-                TaskModels = await TaskService.GetAll();
+                TaskModels = await TaskPmService.GetAll();
                 var UpdatedModels = new List<ProjectPmVieweModel>();
                 foreach (var model in ProjectVieweModels)
                 {
-                    if (TaskModels.Any(x => x.ProjectId == model.ProjectId))
+                    bool asnser = TaskPmService.CheckConnection(model.ProjectId, "project");
                     {
-                        model.DeleteDisabled = true;
-                        UpdatedModels.Add(model);
-                    }
-                    else
-                    {
-                        UpdatedModels.Add(model);
+                        if (asnser)
+                        {
+                            model.DeleteDisabled = true;
+                            UpdatedModels.Add(model);
+                        }
+                        else
+                        {
+                            UpdatedModels.Add(model);
+                        }
                     }
                 }
-                ProjectVieweModels = UpdatedModels;
             }
             catch (Exception ex)
             {
-                ApplicationErrorService.Cathcer(ex);
+                ApplicationErrorService.ErrorCathcer(ex);
             }
         }
 
@@ -70,7 +74,7 @@ namespace Ti.Pm.Web.Pages.Projects
             }
             catch (Exception ex)
             {
-                ApplicationErrorService.Cathcer(ex);
+                ApplicationErrorService.ErrorCathcer(ex);
             }
 
         }
@@ -83,7 +87,7 @@ namespace Ti.Pm.Web.Pages.Projects
         {
             try
             {
-                var options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium };
+                var options = DialogOptionService.CreateDialogOptions();
                 var dialog = DialogService.Show<DeleteModal>("", options);
                 var result = await dialog.Result;
                 if (!result.Canceled)
@@ -98,33 +102,22 @@ namespace Ti.Pm.Web.Pages.Projects
                     {
                         if (ex.InnerException is SqlException || ex is SqlException)
                         {
-                            options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium };
-                            dialog = DialogService.Show<DeleteError>("", options);
-                            result = await dialog.Result;
+                            options = DialogOptionService.CreateDialogOptions();
+                            dialog = DialogService.Show<DeleteErrorModal>("", options);
                             item.DeleteDisabled = true;
-                            var index = ProjectVieweModels.FindIndex(x => x.ProjectId == item.ProjectId);
-                            ProjectVieweModels[index] = item;
                             StateHasChanged();
                             return;
                         }
                         else
                         {
-                            ApplicationErrorService.Cathcer(ex);
+                            ApplicationErrorService.ErrorCathcer(ex);
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null)
-                {
-                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
-                }
-                else
-                {
-                    string? message = null;
-                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
-                }
+                ApplicationErrorService.ErrorCathcer(ex);
             }
 
         }
@@ -133,57 +126,51 @@ namespace Ti.Pm.Web.Pages.Projects
         {
             try
             {
-                var newItem = new ProjectPmVieweModel();
-                var options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium };
-                var parameters = new DialogParameters<EditProjectPm> { { x => x.ProjectViewModel, newItem } };
+                var newModel = new ProjectPmVieweModel();
+                var options = DialogOptionService.CreateDialogOptions();
+                //передача параметра, стандартная конструкция МудБлазора
+                var parameters = new DialogParameters<EditProjectPm> { { x => x.ProjectViewModel, newModel } };
                 var dialog = DialogService.Show<EditProjectPm>("", parameters, options);
                 var result = await dialog.Result;
                 if (!result.Canceled)
                 {
-                    ProjectPmVieweModel returnModel = new ProjectPmVieweModel();
-                    returnModel = newItem;
-                    var newUser = ProjectService.Create(returnModel);
-                    ProjectVieweModels.Add(newItem);
+                    ProjectService.Create(newModel);
+                    ProjectVieweModels.Add(newModel);
                     StateHasChanged();
                 }
-
             }
             catch (Exception ex)
             {
-                ApplicationErrorService.Cathcer(ex);
+                ApplicationErrorService.ErrorCathcer(ex);
             }
         }
 
-        public async Task EditItemDialog(ProjectPmVieweModel item)
+        public async Task EditItemDialog(ProjectPmVieweModel updateModel)
         {
             try
             {
-                var options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium };
-                var parameters = new DialogParameters<EditProjectPm> { { x => x.ProjectViewModel, item } };
+                var options = DialogOptionService.CreateDialogOptions();
+                //передача параметра, стандартная конструкция МудБлазора
+                var parameters = new DialogParameters<EditProjectPm> { { x => x.ProjectViewModel, updateModel } };
                 var dialog = DialogService.Show<EditProjectPm>("", parameters, options);
                 var result = await dialog.Result;
                 if (!result.Canceled)
                 {
-                    ProjectPmVieweModel returnModel = new ProjectPmVieweModel();
-                    returnModel = (ProjectPmVieweModel)result.Data;
-                    var newItem = ProjectService.Update(returnModel);
-                    var index = ProjectVieweModels.FindIndex(x => x.ProjectId == newItem.ProjectId);
-                    newItem.DeleteDisabled = ProjectVieweModels[index].DeleteDisabled;
-                    ProjectVieweModels[index] = newItem;
+                    ProjectService.Update(updateModel);                    
                     StateHasChanged();
                 }
                 else
                 {
-                    var oldItem = ProjectService.ReloadItem(item);
+                    var oldItem = ProjectService.ReloadItem(updateModel);
+                    oldItem.DeleteDisabled = updateModel.DeleteDisabled;
                     var index = ProjectVieweModels.FindIndex(x => x.ProjectId == oldItem.ProjectId);
                     ProjectVieweModels[index] = oldItem;
                     StateHasChanged();
                 }
-
             }
             catch (Exception ex)
             {
-                ApplicationErrorService.Cathcer(ex);
+                ApplicationErrorService.ErrorCathcer(ex);
             }
         }
         public async Task ShowChangeLogDialog(ProjectPmVieweModel item)
@@ -191,18 +178,14 @@ namespace Ti.Pm.Web.Pages.Projects
             try
             {
                 var changeLogJson = string.IsNullOrEmpty(item.ChangeLogJson) ? new List<ChangeLog>() : JsonSerializer.Deserialize<List<ChangeLog>>(item.ChangeLogJson);
-                var options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium };
+                var options = DialogOptionService.CreateDialogOptions();
                 var parameters = new DialogParameters<ChangeLogModal> { { x => x.ChangeLog, changeLogJson } };
-                var dialog = DialogService.Show<ChangeLogModal>("", parameters, options);
-                var result = await dialog.Result;
-
+                DialogService.Show<ChangeLogModal>("", parameters, options);
             }
             catch (Exception ex)
             {
-                ApplicationErrorService.Cathcer(ex);
+                ApplicationErrorService.ErrorCathcer(ex);
             }
         }
-
-
     }
 }

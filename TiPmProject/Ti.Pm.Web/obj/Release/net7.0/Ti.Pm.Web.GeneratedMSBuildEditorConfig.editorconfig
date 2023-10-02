@@ -68,8 +68,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXENoYW5nZUxvZ01vZGFsLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Shared/DeleteError.razor]
-build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXERlbGV0ZUVycm9yLnJhem9y
+[C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Shared/DeleteErrorModal.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXERlbGV0ZUVycm9yTW9kYWwucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Shared/DeleteModal.razor]
@@ -88,8 +88,8 @@ build_metadata.AdditionalFiles.CssScope = b-ph4uo8yt43
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-o49tmmlegb
 
-[C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Pages/Error.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+[C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Pages/ErrorPage/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3JQYWdlXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Pages/_Host.cshtml]

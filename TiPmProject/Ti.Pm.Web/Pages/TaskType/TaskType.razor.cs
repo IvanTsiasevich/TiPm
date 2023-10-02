@@ -4,8 +4,8 @@ using MudBlazor;
 using System.Text.Json;
 using Ti.Pm.PmDb.Model;
 using Ti.Pm.Web.Data.Service;
+using Ti.Pm.Web.Data.Services;
 using Ti.Pm.Web.Data.ViewModel;
-using Ti.Pm.Web.Pages.Projects.Edit;
 using Ti.Pm.Web.Pages.TaskType.Edit;
 using Ti.Pm.Web.Shared;
 
@@ -13,16 +13,17 @@ namespace Ti.Pm.Web.Pages.TaskType
 {
     public class TaskTypeView : ComponentBase
     {
-        //Является полем которому мы присваем значение по умолчанию, и изменяем его введением фильтра при пролучении FilterByTitle,
-        //и только после этого фильтруем функцией FiltersByTitle() которая поле и использует и сразу же вызывается после присвоения поля.
         public string mFilterTitle = "";
+
+        public List<TaskTypePmVieweModel> TaskTypeVieweModel { get; set; }
+        public List<TaskPmVieweModel> TaskModels { get; set; }
+
         [Inject] protected IDialogService DialogService { get; set; }
+        [Inject] protected CreateDialogOptionService DialogOptionService { get; set; }
         [Inject] private LogApplicationService ApplicationErrorService { get; set; }
         [Inject] private TaskTypePmService TaskTypePmService { get; set; }
         [Inject] private TaskPmService TaskPmService { get; set; }
 
-        public List<TaskTypePmVieweModel> TaskTypeVieweModel { get; set; } 
-        public List<TaskPmVieweModel> TaskModels { get; set; } 
         protected override async Task OnInitializedAsync()
         {
             try
@@ -32,24 +33,27 @@ namespace Ti.Pm.Web.Pages.TaskType
                 var UpdatedModels = new List<TaskTypePmVieweModel>();
                 foreach (var model in TaskTypeVieweModel)
                 {
-                    if (TaskModels.Any(x => x.TaskTypeId == model.TaskTypeId))
+                    bool asnser = TaskPmService.CheckConnection(model.TaskTypeId, "taskType");
                     {
-                        model.DeleteDisabled = true;
-                        UpdatedModels.Add(model);
-                    }
-                    else
-                    {
-                        UpdatedModels.Add(model);
+                        if (asnser)
+                        {
+                            model.DeleteDisabled = true;
+                            UpdatedModels.Add(model);
+                        }
+                        else
+                        {
+                            UpdatedModels.Add(model);
+                        }
                     }
                 }
                 TaskTypeVieweModel = UpdatedModels;
             }
             catch (Exception ex)
             {
-                ApplicationErrorService.Cathcer(ex);
+                ApplicationErrorService.ErrorCathcer(ex);
             }
         }
-       
+
         public string FilterByTitle
         {
             get => mFilterTitle;
@@ -69,7 +73,7 @@ namespace Ti.Pm.Web.Pages.TaskType
             }
             catch (Exception ex)
             {
-                ApplicationErrorService.Cathcer(ex);
+                ApplicationErrorService.ErrorCathcer(ex);
             }
 
         }
@@ -78,112 +82,93 @@ namespace Ti.Pm.Web.Pages.TaskType
             FilterByTitle = "";
         }
 
-        protected async Task DeleteDialogAsync(TaskTypePmVieweModel item)
+        protected async Task DeleteDialogAsync(TaskTypePmVieweModel modelForDelete)
         {
             try
             {
-                var options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium };
+                var options = DialogOptionService.CreateDialogOptions();
                 var dialog = DialogService.Show<DeleteModal>("", options);
                 var result = await dialog.Result;
                 if (!result.Canceled)
                 {
                     try
                     {
-                        TaskTypePmService.Delete(item);
-                        TaskTypeVieweModel.Remove(item);
+                        TaskTypePmService.Delete(modelForDelete);
+                        TaskTypeVieweModel.Remove(modelForDelete);
                         StateHasChanged();
                     }
                     catch (Exception ex)
                     {
                         if (ex.InnerException is SqlException || ex is SqlException)
                         {
-                            options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium };
-                            dialog = DialogService.Show<DeleteError>("", options);
-                            result = await dialog.Result;
-                            item.DeleteDisabled = true;
-                            var index = TaskTypeVieweModel.FindIndex(x => x.TaskTypeId == item.TaskTypeId);
-                            TaskTypeVieweModel[index] = item;
+                            options = DialogOptionService.CreateDialogOptions();
+                            dialog = DialogService.Show<DeleteErrorModal>("", options);
+                            modelForDelete.DeleteDisabled = true;
                             StateHasChanged();
                             return;
                         }
                         else
                         {
-                            ApplicationErrorService.Cathcer(ex);
+                            ApplicationErrorService.ErrorCathcer(ex);
                         }
                     }
-                  
                 }
             }
             catch (Exception ex)
             {
-                if (ex.InnerException != null)
-                {
-                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
-                }
-                else
-                {
-                    string? message = null;
-                    ApplicationErrorService.Create(ex.Message, ex.StackTrace, DateTime.Now, message);
-                }
+                ApplicationErrorService.ErrorCathcer(ex);
             }
-
         }
 
         public async Task AddItemDialog()
         {
             try
             {
-                var newItem = new TaskTypePmVieweModel();
-                var options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium };
-                var parameters = new DialogParameters<EditTaskTypePm> { { x => x.TaskTypePmVieweModel, newItem } };
+                var newModel = new TaskTypePmVieweModel();
+                var options = DialogOptionService.CreateDialogOptions();
+                //передача параметра, стандартная конструкция МудБлазора
+                var parameters = new DialogParameters<EditTaskTypePm> { { x => x.TaskTypePmVieweModel, newModel } };
                 var dialog = DialogService.Show<EditTaskTypePm>("", parameters, options);
                 var result = await dialog.Result;
                 if (!result.Canceled)
                 {
-                    TaskTypePmVieweModel returnModel = new TaskTypePmVieweModel();
-                    returnModel = newItem;
-                    var newUser = TaskTypePmService.Create(returnModel);
-                    TaskTypeVieweModel.Add(newItem);
+                    TaskTypePmService.Create(newModel);
+                    TaskTypeVieweModel.Add(newModel);
                     StateHasChanged();
                 }
-
             }
             catch (Exception ex)
             {
-                ApplicationErrorService.Cathcer(ex);
+                ApplicationErrorService.ErrorCathcer(ex);
             }
         }
 
-        public async Task EditItemDialog(TaskTypePmVieweModel item)
+        public async Task EditItemDialog(TaskTypePmVieweModel updateModel)
         {
             try
             {
-                var options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium };
-                var parameters = new DialogParameters<EditTaskTypePm> { { x => x.TaskTypePmVieweModel, item } };
+                var options = DialogOptionService.CreateDialogOptions();
+                //передача параметра, стандартная конструкция МудБлазора
+                var parameters = new DialogParameters<EditTaskTypePm> { { x => x.TaskTypePmVieweModel, updateModel } };
                 var dialog = DialogService.Show<EditTaskTypePm>("", parameters, options);
                 var result = await dialog.Result;
                 if (!result.Canceled)
                 {
-                    TaskTypePmVieweModel returnModel = new TaskTypePmVieweModel();
-                    returnModel = (TaskTypePmVieweModel)result.Data;
-                    var newItem = TaskTypePmService.Update(returnModel);
-                    var index = TaskTypeVieweModel.FindIndex(x => x.TaskTypeId == newItem.TaskTypeId);
-                    newItem.DeleteDisabled = TaskTypeVieweModel[index].DeleteDisabled;                    
-                    TaskTypeVieweModel[index] = newItem;
+                    TaskTypePmService.Update(updateModel);                    
                     StateHasChanged();
                 }
                 else
                 {
-                    var oldItem = TaskTypePmService.ReloadItem(item);
+                    var oldItem = TaskTypePmService.ReloadItem(updateModel);
+                    oldItem.DeleteDisabled = updateModel.DeleteDisabled;
                     var index = TaskTypeVieweModel.FindIndex(x => x.TaskTypeId == oldItem.TaskTypeId);
                     TaskTypeVieweModel[index] = oldItem;
                     StateHasChanged();
                 }
-
             }
             catch (Exception ex)
             {
-                ApplicationErrorService.Cathcer(ex);
+                ApplicationErrorService.ErrorCathcer(ex);
             }
         }
         public async Task ShowChangeLogDialog(TaskTypePmVieweModel item)
@@ -191,16 +176,14 @@ namespace Ti.Pm.Web.Pages.TaskType
             try
             {
                 var changeLogJson = string.IsNullOrEmpty(item.ChangeLogJson) ? new List<ChangeLog>() : JsonSerializer.Deserialize<List<ChangeLog>>(item.ChangeLogJson);
-                var options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium };
+                var options = DialogOptionService.CreateDialogOptions();
                 var parameters = new DialogParameters<ChangeLogModal> { { x => x.ChangeLog, changeLogJson } };
-                var dialog = DialogService.Show<ChangeLogModal>("", parameters, options);
-                var result = await dialog.Result;
-
+                DialogService.Show<ChangeLogModal>("", parameters, options);
             }
             catch (Exception ex)
             {
-                ApplicationErrorService.Cathcer(ex);
+                ApplicationErrorService.ErrorCathcer(ex);
             }
-        }
+        }       
     }
 }

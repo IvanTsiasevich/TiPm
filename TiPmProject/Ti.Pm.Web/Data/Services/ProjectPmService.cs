@@ -1,7 +1,6 @@
 ﻿using Ti.Pm.PmDb.Model;
 using Ti.Pm.PmDb;
 using Ti.Pm.Web.Data.ViewModel;
-using Ti.Pm.Web.Pages.Projects;
 
 namespace Ti.Pm.Web.Data.Service
 {
@@ -27,11 +26,9 @@ namespace Ti.Pm.Web.Data.Service
             return vieweModel;
         }
 
-        public ProjectPmVieweModel Update(ProjectPmVieweModel updatedVieweModel)
+        public ProjectPmVieweModel Update(ProjectPmVieweModel vieweModel)
         {
-            var vieweModel = mRepoProject.FindById(updatedVieweModel.ProjectId);
-            vieweModel.Title = updatedVieweModel.Title;
-            return Convert(mRepoProject.Update(vieweModel));
+            return Convert(mRepoProject.Update(vieweModel.DbModel));
         }
         public ProjectPmVieweModel ReloadItem(ProjectPmVieweModel updatedVieweModel)
         {
@@ -50,18 +47,17 @@ namespace Ti.Pm.Web.Data.Service
         }
 
         public ProjectPmVieweModel Create(ProjectPmVieweModel vieweModel)
-        {           
+        {
             var dbModel = mRepoProject.Create(vieweModel.DbModel);
             return Convert(dbModel);
         }
-  
+
         public List<ProjectPmVieweModel> FilteringByTitle(string title)
         {
             var filteredListLogs = mRepoProject.GetQuery().Where(x => x.Title.ToLower().Contains(title.ToLower())).ToList();
-            var result = filteredListLogs.Select(x=>Convert(x)).ToList();
+            var result = filteredListLogs.Select(x => Convert(x)).ToList();
             result.Reverse();
             return result;
-        }
-
+        }      
     }
 }

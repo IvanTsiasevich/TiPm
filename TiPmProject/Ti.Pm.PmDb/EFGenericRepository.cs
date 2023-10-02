@@ -6,36 +6,35 @@ namespace Ti.Pm.PmDb
 {
     public class EFRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
-        private DbContext _context;
-        private DbSet<TEntity> _dbSet;
-        private IChangeLog IChangeLog ;
+        private DbContext mContext;
+        private DbSet<TEntity> mDbSet;
 
         public EFRepository(DbContext context)
         {
-            _context = context;
-            _dbSet = context.Set<TEntity>();
+            mContext = context;
+            mDbSet = context.Set<TEntity>();
         }
         
         public IEnumerable<TEntity> Get()
         {
-            return _dbSet.AsNoTracking().ToList();
+            return mDbSet.AsNoTracking().ToList();
         }
 
         public IQueryable<TEntity> GetQuery()
         {
-            return _dbSet.AsNoTracking().AsQueryable();
+            return mDbSet.AsNoTracking().AsQueryable();
         }
                 
         public TEntity FindById(int id)
         {
-            var entity = _dbSet.Find(id);
+            var entity = mDbSet.Find(id);
             if (entity == null)
             {
                 return null;
             }
 
-            _context.Entry(entity).State = EntityState.Detached;
-            _context.SaveChanges();
+            mContext.Entry(entity).State = EntityState.Detached;
+            mContext.SaveChanges();
 
             return entity;
         }
@@ -46,24 +45,24 @@ namespace Ti.Pm.PmDb
             {
                 FillChangeLogJson((IChangeLog)item, "Create");
             }
-            var itemNew = _dbSet.Add(item).Entity;
-            _context.SaveChanges();
+            var itemNew = mDbSet.Add(item).Entity;
+            mContext.SaveChanges();
 
-            _context.Entry(item).State = EntityState.Detached;
-            _context.SaveChanges();
+            mContext.Entry(item).State = EntityState.Detached;
+            mContext.SaveChanges();
 
             return itemNew;
         }
 
         public TEntity Reload(int id)
         {
-            var item = _dbSet.Find(id);
+            var item = mDbSet.Find(id);
             if (item == null)
             {
                 return null;
             }
-            _context.Entry(item).State = EntityState.Detached;
-            var result = _context.Entry(item).GetDatabaseValues();
+            mContext.Entry(item).State = EntityState.Detached;
+            var result = mContext.Entry(item).GetDatabaseValues();
 
             return (TEntity)result?.ToObject();
         }
@@ -75,11 +74,11 @@ namespace Ti.Pm.PmDb
             {
                 FillChangeLogJson((IChangeLog)item, "Update");
             }
-            _context.Entry(item).State = EntityState.Modified;
-            _context.SaveChanges();
+            mContext.Entry(item).State = EntityState.Modified;
+            mContext.SaveChanges();
 
-            _context.Entry(item).State = EntityState.Detached;
-            _context.SaveChanges();
+            mContext.Entry(item).State = EntityState.Detached;
+            mContext.SaveChanges();
 
             return item;
         }
@@ -88,14 +87,14 @@ namespace Ti.Pm.PmDb
         {
             try
             {
-                _dbSet.Attach(item);
-                _dbSet.Remove(item);
-                _context.SaveChanges();
+                mDbSet.Attach(item);
+                mDbSet.Remove(item);
+                mContext.SaveChanges();
             }
             catch (Exception ex)
             {
-                _context.Entry(item).State = EntityState.Detached;
-                _context.SaveChanges();
+                mContext.Entry(item).State = EntityState.Detached;
+                mContext.SaveChanges();
                 throw ex;
             }
         }

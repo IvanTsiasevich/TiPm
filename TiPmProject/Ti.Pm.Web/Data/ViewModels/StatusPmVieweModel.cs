@@ -11,7 +11,6 @@ namespace Ti.Pm.Web.Data.ViewModel
         public StatusPmVieweModel()
         {
             mDbModel = new StatusPm();
-
         }
 
         public StatusPmVieweModel(StatusPm item)

@@ -5,13 +5,12 @@ namespace Ti.Pm.Web.Shared
 {
     public class DeleteModalView : ComponentBase
     {
-        [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-                
-        public bool Answer { get; set; } = true;
+        public bool mAnswer = true;
 
+        [CascadingParameter] MudDialogInstance MudDialog { get; set; }                
         public void Delete()
         {
-            MudDialog.Close(DialogResult.Ok(Answer));
+            MudDialog.Close(DialogResult.Ok(mAnswer));
         }
         public void Cancel()
         {

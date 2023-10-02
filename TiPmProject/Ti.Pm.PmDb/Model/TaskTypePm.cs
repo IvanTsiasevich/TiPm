@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 namespace Ti.Pm.PmDb.Model
 {
     [Table("TaskType")]
-
     public class TaskTypePm : IChangeLog
     {
         [Key]

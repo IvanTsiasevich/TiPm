@@ -4,6 +4,7 @@ using MudBlazor;
 using System.Text.Json;
 using Ti.Pm.PmDb.Model;
 using Ti.Pm.Web.Data.Service;
+using Ti.Pm.Web.Data.Services;
 using Ti.Pm.Web.Data.ViewModel;
 using Ti.Pm.Web.Pages.Status.Edit;
 using Ti.Pm.Web.Shared;
@@ -14,14 +15,14 @@ namespace Ti.Pm.Web.Pages.Status
     {
         public string mFilterTitle = "";
 
+        public List<StatusPmVieweModel> StatusModels { get; set; }
+        public List<TaskPmVieweModel> TaskModels { get; set; }
+
         [Inject] protected IDialogService DialogService { get; set; }
+        [Inject] protected CreateDialogOptionService DialogOptionService { get; set; }
         [Inject] private LogApplicationService ApplicationErrorService { get; set; }
         [Inject] private StatusPmService StatusPmService { get; set; }
         [Inject] private TaskPmService TaskPmService { get; set; }
-
-        public List<StatusPmVieweModel> StatusModels { get; set; } 
-        public List<TaskPmVieweModel> TaskModels { get; set; } 
-
 
         protected override async Task OnInitializedAsync()
         {
@@ -32,25 +33,27 @@ namespace Ti.Pm.Web.Pages.Status
                 var UpdatedModels = new List<StatusPmVieweModel>();
                 foreach (var model in StatusModels)
                 {
-                    if (TaskModels.Any(x => x.StatusId == model.StatusId))
+                    bool asnser = TaskPmService.CheckConnection(model.StatusId, "status");
                     {
-                        model.DeleteDisabled = true;
-                        UpdatedModels.Add(model);
-                    }
-                    else
-                    {
-                        UpdatedModels.Add(model);
+                        if (asnser)
+                        {
+                            model.DeleteDisabled = true;
+                            UpdatedModels.Add(model);
+                        }
+                        else
+                        {
+                            UpdatedModels.Add(model);
+                        }
                     }
                 }
                 StatusModels = UpdatedModels;
             }
             catch (Exception ex)
             {
-                ApplicationErrorService.Cathcer(ex);
+                ApplicationErrorService.ErrorCathcer(ex);
             }
 
         }
-
         public string FilterByTitle
         {
             get => mFilterTitle;
@@ -73,7 +76,7 @@ namespace Ti.Pm.Web.Pages.Status
             }
             catch (Exception ex)
             {
-                ApplicationErrorService.Cathcer(ex);
+                ApplicationErrorService.ErrorCathcer(ex);
             }
 
         }
@@ -82,93 +85,85 @@ namespace Ti.Pm.Web.Pages.Status
             FilterByTitle = "";
         }
 
-        protected async Task DeleteDialogAsync(StatusPmVieweModel item)
+        protected async Task DeleteDialogAsync(StatusPmVieweModel modelForDelete)
         {
             try
             {
-                var options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium };
+                var options = DialogOptionService.CreateDialogOptions();
                 var dialog = DialogService.Show<DeleteModal>("", options);
                 var result = await dialog.Result;
                 if (!result.Canceled)
                 {
                     try
                     {
-                        StatusPmService.Delete(item);
-                        StatusModels.Remove(item);
+                        StatusPmService.Delete(modelForDelete);
+                        StatusModels.Remove(modelForDelete);
                         StateHasChanged();
                     }
                     catch (Exception ex)
                     {
                         if (ex.InnerException is SqlException || ex is SqlException)
                         {
-                            options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium };
-                            dialog = DialogService.Show<DeleteError>("", options);
-                            result = await dialog.Result;
-                            item.DeleteDisabled = true;
-                            var index = StatusModels.FindIndex(x => x.StatusId == item.StatusId);
-                            StatusModels[index] = item;
+                            options = DialogOptionService.CreateDialogOptions();
+                            dialog = DialogService.Show<DeleteErrorModal>("", options);
+                            modelForDelete.DeleteDisabled = true;
                             StateHasChanged();
                             return;
                         }
                         else
                         {
-                            ApplicationErrorService.Cathcer(ex);
+                            ApplicationErrorService.ErrorCathcer(ex);
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                ApplicationErrorService.Cathcer(ex);
+                ApplicationErrorService.ErrorCathcer(ex);
             }
-
         }
 
         public async Task AddItemDialog()
         {
             try
             {
-                var newItem = new StatusPmVieweModel();
-                var options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium };
-                var parameters = new DialogParameters<EditStatusPm> { { x => x.StatusPmVieweModel, newItem } };
+                var newModel = new StatusPmVieweModel();
+                var options = DialogOptionService.CreateDialogOptions();
+                //передача параметра, стандартная конструкция МудБлазора
+                var parameters = new DialogParameters<EditStatusPm> { { x => x.StatusPmVieweModel, newModel } };
                 var dialog = DialogService.Show<EditStatusPm>("", parameters, options);
                 var result = await dialog.Result;
                 if (!result.Canceled)
                 {
-                    StatusPmVieweModel returnModel = new StatusPmVieweModel();
-                    returnModel = newItem;
-                    var newUser = StatusPmService.Create(returnModel);
-                    StatusModels.Add(newItem);
+                    StatusPmService.Create(newModel);
+                    StatusModels.Add(newModel);
                     StateHasChanged();
                 }
             }
             catch (Exception ex)
             {
-                ApplicationErrorService.Cathcer(ex);
+                ApplicationErrorService.ErrorCathcer(ex);
             }
         }
 
-        public async Task EditItemDialog(StatusPmVieweModel item)
+        public async Task EditItemDialog(StatusPmVieweModel updateModel)
         {
             try
             {
-                var options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium };
-                var parameters = new DialogParameters<EditStatusPm> { { x => x.StatusPmVieweModel, item } };
+                var options = DialogOptionService.CreateDialogOptions();
+                //передача параметра, стандартная конструкция МудБлазора
+                var parameters = new DialogParameters<EditStatusPm> { { x => x.StatusPmVieweModel, updateModel } };
                 var dialog = DialogService.Show<EditStatusPm>("", parameters, options);
                 var result = await dialog.Result;
                 if (!result.Canceled)
                 {
-                    StatusPmVieweModel returnModel = new StatusPmVieweModel();
-                    returnModel = (StatusPmVieweModel)result.Data;
-                    var newItem = StatusPmService.Update(returnModel);
-                    var index = StatusModels.FindIndex(x => x.StatusId == newItem.StatusId);
-                    newItem.DeleteDisabled = StatusModels[index].DeleteDisabled;
-                    StatusModels[index] = newItem;
+                    StatusPmService.Update(updateModel);
                     StateHasChanged();
                 }
                 else
                 {
-                    var oldItem = StatusPmService.ReloadItem(item);
+                    var oldItem = StatusPmService.ReloadItem(updateModel);
+                    oldItem.DeleteDisabled = updateModel.DeleteDisabled;
                     var index = StatusModels.FindIndex(x => x.StatusId == oldItem.StatusId);
                     StatusModels[index] = oldItem;
                     StateHasChanged();
@@ -177,7 +172,7 @@ namespace Ti.Pm.Web.Pages.Status
             }
             catch (Exception ex)
             {
-                ApplicationErrorService.Cathcer(ex);
+                ApplicationErrorService.ErrorCathcer(ex);
             }
         }
         public async Task ShowChangeLogDialog(StatusPmVieweModel item)
@@ -185,17 +180,15 @@ namespace Ti.Pm.Web.Pages.Status
             try
             {
                 var changeLogJson = string.IsNullOrEmpty(item.ChangeLogJson) ? new List<ChangeLog>() : JsonSerializer.Deserialize<List<ChangeLog>>(item.ChangeLogJson);
-                var options = new DialogOptions() { CloseButton = false, MaxWidth = MaxWidth.Medium };
+                var options = DialogOptionService.CreateDialogOptions();
                 var parameters = new DialogParameters<ChangeLogModal> { { x => x.ChangeLog, changeLogJson } };
-                var dialog = DialogService.Show<ChangeLogModal>("", parameters, options);
-                var result = await dialog.Result;
-
+                DialogService.Show<ChangeLogModal>("", parameters, options);
             }
             catch (Exception ex)
             {
-                ApplicationErrorService.Cathcer(ex);
+                ApplicationErrorService.ErrorCathcer(ex);
             }
         }
-    }  
+    }
 }
 

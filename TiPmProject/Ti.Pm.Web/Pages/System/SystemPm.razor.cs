@@ -10,8 +10,9 @@ namespace Ti.Pm.Web.Pages.System
         public string mFilterErrorMsg = "";
         public DateTime mFilterDate = DateTime.Now;
 
+        public List<ApplicationErrorViewModel> ApplicationErrorVieweModels { get; set; }
+
         [Inject] private LogApplicationService ApplicationErrorService { get; set; }
-        public List<ApplicationErrorViewModel> ApplicationErrorVieweModels { get; set; } 
 
         protected override async Task OnInitializedAsync()
         {
@@ -21,7 +22,7 @@ namespace Ti.Pm.Web.Pages.System
             }
             catch (Exception ex)
             {
-                ApplicationErrorService.Cathcer(ex);
+                ApplicationErrorService.ErrorCathcer(ex);
             }
 
         }
@@ -54,7 +55,7 @@ namespace Ti.Pm.Web.Pages.System
             }
             catch (Exception ex)
             {
-                ApplicationErrorService.Cathcer(ex);
+                ApplicationErrorService.ErrorCathcer(ex);
             }
 
         }
@@ -67,7 +68,7 @@ namespace Ti.Pm.Web.Pages.System
             }
             catch (Exception ex)
             {
-                ApplicationErrorService.Cathcer(ex);
+                ApplicationErrorService.ErrorCathcer(ex);
             }
 
         }

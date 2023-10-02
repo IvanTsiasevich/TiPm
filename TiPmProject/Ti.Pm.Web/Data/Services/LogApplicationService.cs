@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using Ti.Pm.PmDb;
+﻿using Ti.Pm.PmDb;
 using Ti.Pm.PmDb.Model;
 using Ti.Pm.Web.Data.ViewModel;
 
@@ -10,7 +9,7 @@ namespace Ti.Pm.Web.Data.Service
         EFRepository<ApplicationError> mRepoLog;
 
         public LogApplicationService(TiPmDbContext context)
-        { 
+        {
             mRepoLog = new EFRepository<ApplicationError>(context);
         }
 
@@ -28,19 +27,12 @@ namespace Ti.Pm.Web.Data.Service
             return model;
         }
 
-        public ApplicationErrorViewModel Create(string msg, string stackTrace, DateTime date, string? innerEx)
+        public ApplicationErrorViewModel Create(ApplicationErrorViewModel viewModel)
         {
-            var viewModel = new ApplicationErrorViewModel
-			{
-				InsertDate = date,
-                ErrorMessage = msg,
-                ErrorContext = stackTrace,
-				ErrorInnerException = innerEx
-			};
             var dbModel = mRepoLog.Create(viewModel.DbModel);
             return Convert(dbModel);
         }
-              
+
         public List<ApplicationErrorViewModel> FilteringByDate(DateTime? dateFilter)
         {
             var filteredListLogs = mRepoLog.GetQuery().Where(x => x.InsertDate.Date == dateFilter.GetValueOrDefault().Date).ToList();
@@ -51,25 +43,29 @@ namespace Ti.Pm.Web.Data.Service
         public List<ApplicationErrorViewModel> FilteringByErrorMsg(string message)
         {
             var filteredListLogs = mRepoLog.GetQuery().Where(x => x.ErrorMessage.ToLower().Contains(message.ToLower())).ToList();
-            var result = filteredListLogs.Select(x=>Convert(x)).ToList();
+            var result = filteredListLogs.Select(x => Convert(x)).ToList();
             result.Reverse();
             return result;
         }
 
-        public void Cathcer(Exception ex)
-        {            
+        public void ErrorCathcer(Exception ex)
+        {
             {
+                var viewModel = new ApplicationErrorViewModel
+                {
+                    InsertDate = DateTime.Now,
+                    ErrorMessage = ex.Message,
+                    ErrorContext = ex.StackTrace
+                };
                 if (ex.InnerException != null)
                 {
-                    Create(ex.Message, ex.StackTrace, DateTime.Now, ex.InnerException.StackTrace);
-                }
-                else
-                {
-                    string? message = null;
-                    Create(ex.Message, ex.StackTrace, DateTime.Now, message);
-                }
+                    viewModel.ErrorInnerException = ex.InnerException.StackTrace;
+                };
+                Create(viewModel);
             }
+
         }
+
     }
 }
 

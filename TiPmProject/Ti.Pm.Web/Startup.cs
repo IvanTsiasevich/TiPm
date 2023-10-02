@@ -4,6 +4,7 @@ using MudBlazor.Services;
 using System.Globalization;
 using Ti.Pm.PmDb;
 using Ti.Pm.Web.Data.Service;
+using Ti.Pm.Web.Data.Services;
 
 namespace Ti.Pm.Web
 {
@@ -52,6 +53,7 @@ namespace Ti.Pm.Web
             services.AddScoped<TaskTypePmService>();
             services.AddScoped<StatusPmService>();
             services.AddScoped<TaskPmService>();
+            services.AddScoped<CreateDialogOptionService>();
         }
 
 
