@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "Jyvqccy9dSLS4sK+xefOqkmmZPDaMIN5SQ4UgSGxmpiAwv+yyMdmePUZXFhrQqqFK4NcqRGGH+g3SoPsK2o7ig==",
+  "dgSpecHash": "8VtdnJQVjMkghuTA+HhNhG6KAPDnL/3Ps9y4ukY+3hu7FHM65E2eor1NRL7uH85T+xjLTgK7SwrYcdaJwMMI9A==",
   "success": true,
   "projectFilePath": "C:\\Users\\DzedPC\\Desktop\\TiPm\\TiPmProject\\Ti.Pm.PmDb\\Ti.Pm.PmDb.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\DzedPC\\.nuget\\packages\\microsoft.aspnetcore.http.abstractions\\2.2.0\\microsoft.aspnetcore.http.abstractions.2.2.0.nupkg.sha512",
+    "C:\\Users\\DzedPC\\.nuget\\packages\\microsoft.aspnetcore.http.features\\2.2.0\\microsoft.aspnetcore.http.features.2.2.0.nupkg.sha512",
     "C:\\Users\\DzedPC\\.nuget\\packages\\microsoft.entityframeworkcore\\7.0.11\\microsoft.entityframeworkcore.7.0.11.nupkg.sha512",
     "C:\\Users\\DzedPC\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\7.0.11\\microsoft.entityframeworkcore.abstractions.7.0.11.nupkg.sha512",
     "C:\\Users\\DzedPC\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\7.0.11\\microsoft.entityframeworkcore.analyzers.7.0.11.nupkg.sha512",
@@ -16,7 +18,8 @@
     "C:\\Users\\DzedPC\\.nuget\\packages\\microsoft.extensions.logging\\7.0.0\\microsoft.extensions.logging.7.0.0.nupkg.sha512",
     "C:\\Users\\DzedPC\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\7.0.0\\microsoft.extensions.logging.abstractions.7.0.0.nupkg.sha512",
     "C:\\Users\\DzedPC\\.nuget\\packages\\microsoft.extensions.options\\7.0.0\\microsoft.extensions.options.7.0.0.nupkg.sha512",
-    "C:\\Users\\DzedPC\\.nuget\\packages\\microsoft.extensions.primitives\\7.0.0\\microsoft.extensions.primitives.7.0.0.nupkg.sha512"
+    "C:\\Users\\DzedPC\\.nuget\\packages\\microsoft.extensions.primitives\\7.0.0\\microsoft.extensions.primitives.7.0.0.nupkg.sha512",
+    "C:\\Users\\DzedPC\\.nuget\\packages\\system.text.encodings.web\\4.5.0\\system.text.encodings.web.4.5.0.nupkg.sha512"
   ],
   "logs": []
 }

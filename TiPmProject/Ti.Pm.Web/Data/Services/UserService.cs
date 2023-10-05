@@ -7,10 +7,13 @@ namespace Ti.Pm.Web.Data.Services
 {
     public class UserService
     {
-        EFRepository<Users> mUsers;
-        public UserService(TiPmDbContext context)
+        EFRepository<User> mUsers;
+        IHttpContextAccessor httpContextAccessor;
+        public UserService(TiPmDbContext context, IHttpContextAccessor httpContextAccessor)
         {
-            mUsers = new EFRepository<Users>(context);
+            mUsers = new EFRepository<User>(context);
+            this.httpContextAccessor = httpContextAccessor;
+            mUsers.SetUserNameForLog(httpContextAccessor.HttpContext.User.Identity.Name);
         }
         public async Task<List<UserVieweModel>> GetAll()
         {
@@ -20,7 +23,7 @@ namespace Ti.Pm.Web.Data.Services
             return await Task.FromResult(vieweModels);
         }
 
-        private static UserVieweModel Convert(Users dbModel)
+        private static UserVieweModel Convert(User dbModel)
         {
             var vieweModel = new UserVieweModel(dbModel);
             return vieweModel;

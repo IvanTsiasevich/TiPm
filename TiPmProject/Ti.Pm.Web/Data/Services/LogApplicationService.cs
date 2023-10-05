@@ -7,12 +7,14 @@ namespace Ti.Pm.Web.Data.Service
     public class LogApplicationService
     {
         EFRepository<ApplicationError> mRepoLog;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public LogApplicationService(TiPmDbContext context)
+        public LogApplicationService(TiPmDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             mRepoLog = new EFRepository<ApplicationError>(context);
+            this.httpContextAccessor = httpContextAccessor;
         }
-
+  
         public async Task<List<ApplicationErrorViewModel>> GetAll()
         {
             var listItems = mRepoLog.Get();
@@ -55,7 +57,8 @@ namespace Ti.Pm.Web.Data.Service
                 {
                     InsertDate = DateTime.Now,
                     ErrorMessage = ex.Message,
-                    ErrorContext = ex.StackTrace
+                    ErrorContext = ex.StackTrace,
+                    UserName = httpContextAccessor.HttpContext.User.Identity.Name
                 };
                 if (ex.InnerException != null)
                 {

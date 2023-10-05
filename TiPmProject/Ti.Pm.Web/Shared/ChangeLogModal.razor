@@ -23,10 +23,16 @@
                         Title
                     </MudTableSortLabel>
                 </MudTh>
+                <MudTh>
+                    <MudTableSortLabel SortBy="new Func<ChangeLog, object>(x=>x.User)">
+                        User
+                    </MudTableSortLabel>
+                </MudTh>
             </HeaderContent>
             <RowTemplate Context="item">
                 <MudTd DataLabel="Date" >@item.Date</MudTd>
                 <MudTd DataLabel="Operation" >@item.Operation</MudTd>
+                <MudTd DataLabel="User">@item.User</MudTd>
             </RowTemplate>           
         </MudTable>
 

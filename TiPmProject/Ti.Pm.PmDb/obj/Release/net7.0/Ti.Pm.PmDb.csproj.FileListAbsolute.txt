@@ -54,3 +54,5 @@ C:\Users\DzedPC\Desktop\TiPm\TiPmProject\Ti.Pm.PmDb\obj\Release\net7.0\refint\Ti
 C:\Users\DzedPC\Desktop\TiPm\TiPmProject\Ti.Pm.PmDb\obj\Release\net7.0\Ti.Pm.PmDb.pdb
 C:\Users\DzedPC\Desktop\TiPm\TiPmProject\Ti.Pm.PmDb\obj\Release\net7.0\Ti.Pm.PmDb.genruntimeconfig.cache
 C:\Users\DzedPC\Desktop\TiPm\TiPmProject\Ti.Pm.PmDb\obj\Release\net7.0\ref\Ti.Pm.PmDb.dll
+C:\Users\DzedPC\Desktop\TiPm\TiPmProject\Ti.Pm.PmDb\bin\Release\net7.0\Microsoft.AspNetCore.Http.Abstractions.dll
+C:\Users\DzedPC\Desktop\TiPm\TiPmProject\Ti.Pm.PmDb\bin\Release\net7.0\Microsoft.AspNetCore.Http.Features.dll

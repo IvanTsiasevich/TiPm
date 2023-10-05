@@ -44,8 +44,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3RhdHVzXFN0YXR1cy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Pages/System/SystemPm.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3lzdGVtXFN5c3RlbVBtLnJhem9y
+[C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Pages/Systems/SystemPm.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3lzdGVtc1xTeXN0ZW1QbS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Pages/Tasks/Edit/EditTaskPm.razor]
@@ -95,6 +95,10 @@ build_metadata.AdditionalFiles.CssScope = b-ph4uo8yt43
 [C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Shared/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-o49tmmlegb
+
+[C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Pages/Account/_Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNjb3VudFxfTG9naW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/DzedPC/Desktop/TiPm/TiPmProject/Ti.Pm.Web/Pages/ErrorPage/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3JQYWdlXEVycm9yLmNzaHRtbA==

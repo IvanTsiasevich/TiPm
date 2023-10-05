@@ -7,9 +7,13 @@ namespace Ti.Pm.Web.Data.Service
     public class StatusPmService
     {
         EFRepository<StatusPm> mRepoStatusPm;
-        public StatusPmService(TiPmDbContext context)
+        private readonly IHttpContextAccessor httpContextAccessor;
+
+        public StatusPmService(TiPmDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             mRepoStatusPm = new EFRepository<StatusPm>(context);
+            this.httpContextAccessor = httpContextAccessor;
+            mRepoStatusPm.SetUserNameForLog(httpContextAccessor.HttpContext.User.Identity.Name);
         }
         public async Task<List<StatusPmVieweModel>> GetAll()
         {

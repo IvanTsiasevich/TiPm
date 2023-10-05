@@ -7,10 +7,12 @@ namespace Ti.Pm.Web.Data.Service
     public class TaskTypePmService
     {
         EFRepository<TaskTypePm> mRepoTaskType;
-
-        public TaskTypePmService(TiPmDbContext context)
+        IHttpContextAccessor httpContextAccessor;
+        public TaskTypePmService(TiPmDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             mRepoTaskType = new EFRepository<TaskTypePm>(context);
+            this.httpContextAccessor = httpContextAccessor;
+            mRepoTaskType.SetUserNameForLog(httpContextAccessor.HttpContext.User.Identity.Name);
         }
         public async Task<List<TaskTypePmVieweModel>> GetAll()
         {

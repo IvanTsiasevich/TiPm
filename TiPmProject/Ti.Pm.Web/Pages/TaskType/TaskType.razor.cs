@@ -27,7 +27,7 @@ namespace Ti.Pm.Web.Pages.TaskType
         protected override async Task OnInitializedAsync()
         {
             try
-            {
+            {              
                 TaskTypeVieweModel = await TaskTypePmService.GetAll();
                 TaskModels = await TaskPmService.GetAll();
                 var UpdatedModels = new List<TaskTypePmVieweModel>();

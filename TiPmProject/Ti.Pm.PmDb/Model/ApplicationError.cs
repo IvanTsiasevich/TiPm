@@ -11,6 +11,7 @@ namespace Ti.Pm.PmDb.Model
         public DateTime InsertDate { get; set; }
         public string ErrorContext { get; set; }
         public string ErrorMessage { get; set; }
+        public string? UserName { get; set; }
         public string? ErrorInnerException { get; set; }
     }
 }

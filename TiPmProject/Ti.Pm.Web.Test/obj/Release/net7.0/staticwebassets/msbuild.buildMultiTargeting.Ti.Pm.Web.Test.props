@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Ti.Pm.Web.Test.props" />
+</Project>

@@ -5,15 +5,15 @@ namespace Ti.Pm.Web.Data.ViewModels
 {
     public class UserVieweModel
     {
-        private Users mDbModel;
-        public Users DbModel => mDbModel;
+        private User mDbModel;
+        public User DbModel => mDbModel;
 
         public UserVieweModel()
         {
-            mDbModel = new Users();
+            mDbModel = new User();
         }
 
-        public UserVieweModel(Users item)
+        public UserVieweModel(User item)
         {
             mDbModel = item;
         }
@@ -41,6 +41,13 @@ namespace Ti.Pm.Web.Data.ViewModels
         {
             get => mDbModel.Password;
             set => mDbModel.Password = value;
+        }
+        [Required]
+        [EmailAddress]
+        public string Login
+        {
+            get => mDbModel.Login;
+            set => mDbModel.Login = value;
         }
         [Required]        
         public int RoleId

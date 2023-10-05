@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using Ti.Pm.PmDb.Model;
 
@@ -8,13 +9,19 @@ namespace Ti.Pm.PmDb
     {
         private DbContext mContext;
         private DbSet<TEntity> mDbSet;
+        private string mUser;
 
-        public EFRepository(DbContext context)
+        public EFRepository(DbContext context,  string user = "" )
         {
             mContext = context;
             mDbSet = context.Set<TEntity>();
+            mUser = user;
         }
-        
+        public void SetUserNameForLog(string user)
+        {
+            mUser = user;
+        }
+
         public IEnumerable<TEntity> Get()
         {
             return mDbSet.AsNoTracking().ToList();
@@ -104,6 +111,7 @@ namespace Ti.Pm.PmDb
             changeLogJson.Add(new ChangeLog()
             {
                 Operation = String.IsNullOrEmpty(operation) ? "Update" : operation,
+                User = mUser,
                 Date = DateTime.Now
             });
             item.ChangeLogJson = JsonSerializer.Serialize(changeLogJson);

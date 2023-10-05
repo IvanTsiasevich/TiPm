@@ -39,6 +39,11 @@ namespace Ti.Pm.Web.Data.ViewModel
             get => mDbModel.ErrorMessage;
             set => mDbModel.ErrorMessage = value;
         }
+        public string? UserName
+        {
+            get => mDbModel.UserName;
+            set => mDbModel.UserName = value;
+        }
         public string? ErrorInnerException
         {
             get => mDbModel.ErrorInnerException;

@@ -7,10 +7,12 @@ namespace Ti.Pm.Web.Data.Service
     public class ProjectPmService
     {
         EFRepository<ProjectPm> mRepoProject;
-
-        public ProjectPmService(TiPmDbContext context)
+        private readonly IHttpContextAccessor httpContextAccessor;
+        public ProjectPmService(TiPmDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             mRepoProject = new EFRepository<ProjectPm>(context);
+            this.httpContextAccessor = httpContextAccessor;
+            mRepoProject.SetUserNameForLog(httpContextAccessor.HttpContext.User.Identity.Name);
         }
         public async Task<List<ProjectPmVieweModel>> GetAll()
         {
