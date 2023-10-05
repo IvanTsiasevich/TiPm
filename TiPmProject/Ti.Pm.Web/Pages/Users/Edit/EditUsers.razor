@@ -1,0 +1,42 @@
+﻿@inherits EditUsersViewe
+
+<EditForm Model="@UserVieweModel" OnValidSubmit="Save">
+    <DataAnnotationsValidator />
+    <MudDialog Style="width: 30%;">
+        <DialogContent>
+            <div class="d-flex justify-content-between">
+                <MudText Typo="Typo.h6">
+                    Status
+                </MudText>
+                <div class="d-flex" style="justify-content: flex-end">
+                    <MudButton Variant="Variant.Outlined" style="margin-bottom:14px;margin-left: 10px;" type="submit" ButtonType="ButtonType.Submit">Save</MudButton>
+                    <MudButton Variant="Variant.Outlined" style="margin-bottom:14px;margin-left: 10px;" @onclick="Cancel">x</MudButton>
+                </div>
+            </div>
+            <p>
+                Name<br>
+                <input style="margin-bottom:4px; border-width:1px" type="text" class="form-control" @bind-value="@UserVieweModel.PersonName" @bind-value:event="oninput" />
+                <ValidationMessage For="@(()=>UserVieweModel.PersonName)" />
+            </p>
+            <p>
+                Surname<br>
+                <input style="margin-bottom:4px; border-width:1px" type="text" class="form-control" @bind-value="@UserVieweModel.PersonSurname" @bind-value:event="oninput" />
+                <ValidationMessage For="@(()=>UserVieweModel.PersonSurname)" />
+            </p>
+            <p>
+                Password<br>
+                <input style="margin-bottom:4px; border-width:1px" type="text" class="form-control" @bind-value="@UserVieweModel.Password" @bind-value:event="oninput" />
+                <ValidationMessage For="@(()=>UserVieweModel.Password)" />
+            </p>
+            <p>
+                <InputSelect style="margin-bottom:4px;" @bind-Value="@UserVieweModel.RoleId" class="form-select">
+                    <option value="1">Admin</option>
+                    <option value="2">User</option>                   
+                </InputSelect>               
+            </p>
+
+
+
+        </DialogContent>
+    </MudDialog>
+</EditForm>

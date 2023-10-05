@@ -1,0 +1,42 @@
+﻿@page "/Users"
+@inherits UsersView
+
+
+<MudButton Variant="Variant.Outlined" style="margin-bottom:14px" @onclick="AddItemDialog">Add</MudButton>
+
+<MudTable Items="@UsersModels" SortLabel="Sort" FixedHeader="true" Height="" Style="width: 100%" Class="mud-table-custom">
+    <HeaderContent>
+        <MudTh>
+            <MudTableSortLabel SortBy="new Func<Data.ViewModels.UserVieweModel, object>(x=>x.UserId)">
+                UserId
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortBy="new Func<Data.ViewModels.UserVieweModel, object>(x=>x.PersonName)">
+                Person name
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortBy="new Func<Data.ViewModels.UserVieweModel, object>(x=>x.PersonSurname)">
+                Person surname 
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate Context="item">
+        <MudTd DataLabel="UserId" Style="width: 10%">@item.UserId</MudTd>
+        <MudTd DataLabel="PersonName" Style="width: 55%">@item.PersonName</MudTd>
+        <MudTd DataLabel="PersonSurname" Style="width: 20%">@item.PersonSurname</MudTd>
+        <MudTd Style="text-align:end">
+            <button class="btn" @onclick="()=>EditItemDialog(item)"><i class="fa fa-folder"></i></button> 
+            <button class="btn" @onclick="()=>ShowChangeLogDialog(item)"><i class="fa fa-list"></i></button>
+
+            <button class="btn" @onclick="()=>DeleteDialogAsync(item)">
+                    <i class="fa fa-trash"></i>
+                </button>                                    
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager RowsPerPageString="Number of objects" PageSizeOptions="new int[]{50, 100}" />
+    </PagerContent>
+</MudTable>

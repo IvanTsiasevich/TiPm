@@ -21,5 +21,6 @@ namespace Ti.Pm.PmDb
         public DbSet<TaskTypePm> TaskTypePm { get; set; }
         public DbSet<StatusPm> StatusPm { get; set; }
         public DbSet<TaskPm> TaskPm { get; set; }
+        public DbSet<Users> User { get; set; }
     }
 }

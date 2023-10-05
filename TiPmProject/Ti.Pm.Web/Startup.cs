@@ -54,6 +54,7 @@ namespace Ti.Pm.Web
             services.AddScoped<StatusPmService>();
             services.AddScoped<TaskPmService>();
             services.AddScoped<CreateDialogOptionService>();
+            services.AddScoped<UserService>();
         }
 
 
