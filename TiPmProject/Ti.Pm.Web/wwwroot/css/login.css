@@ -6,10 +6,11 @@
 .content {
     height: 100vh;
     background-color: #f7f7f7;
-    padding-top: 0px !important;
+    padding-top: 200px !important;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center
+    justify-content: space-between;
 }
 
 
@@ -20,7 +21,7 @@
     padding: 10px 35px;
     font-size: 33px;
     color: #505166;
-    cursor:default;
+    cursor: default;
     z-index: 1;
     left: 50%;
     transform: translateX(-50%);
@@ -35,22 +36,22 @@
     z-index: 1;
 }
 
-.alfa--lofin h1 {
-    color: rgba(17,17,46,.7);
-    font-size: 24px;
-    font-weight: 600 !important;
-    text-align: center;
-    margin-bottom: 35px;
-    line-height: 1.5;
-    cursor: default;
-}
+    .alfa--lofin h1 {
+        color: rgba(17,17,46,.7);
+        font-size: 24px;
+        font-weight: 600 !important;
+        text-align: center;
+        margin-bottom: 35px;
+        line-height: 1.5;
+        cursor: default;
+    }
 
-.alfa--lofin input {
-    height: 46px;
-    padding-left: 48px;
-    padding-right: 16px;
-    border: none;
-}
+    .alfa--lofin input {
+        height: 46px;
+        padding-left: 48px;
+        padding-right: 16px;
+        border: none;
+    }
 
 .alfa--input {
     border: 1px solid #b1b1b3;
@@ -58,9 +59,9 @@
     transition: all .2s;
 }
 
-.alfa--input:hover {
-    border-color: #8d8d8f;
-}
+    .alfa--input:hover {
+        border-color: #8d8d8f;
+    }
 
 .alfa--lofin .bi--left--input {
     position: absolute;
@@ -83,9 +84,9 @@
     font-weight: bold;
 }
 
-.alfa--lofin input[type=button]:hover {
-    background-color: #268fd6;
-}
+    .alfa--lofin input[type=button]:hover {
+        background-color: #268fd6;
+    }
 
 .fadableMsg {
     font-weight: bold;
@@ -123,11 +124,12 @@
 .invalid-shake {
     animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
 }
-.invalid-border{
+
+.invalid-border {
     border: 1px solid #ff405c !important;
 }
 
-.parrent-loader{
+.parrent-loader {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -135,7 +137,7 @@
     position: relative;
 }
 
-.login-loader-content{
+.login-loader-content {
     position: absolute;
     width: 35px;
     height: 35px;
@@ -145,7 +147,7 @@
     top: 44%;
 }
 
-.login-loader{
+.login-loader {
     content: '';
     position: absolute;
     width: 30px;
@@ -158,11 +160,11 @@
 }
 
 @-webkit-keyframes rotating {
-    from{
+    from {
         transform: rotate(360deg);
     }
-    to{
+
+    to {
         transform: rotate(0deg);
     }
 }
-

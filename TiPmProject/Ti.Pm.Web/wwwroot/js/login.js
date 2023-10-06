@@ -18,11 +18,11 @@ var UserLoginValidation = function () {
         cache: false,
         success: function (result) {
             if (result.status == 0) {
-                AddValidAnimation("Die Anmeldung ist fehlgeschlagen.<br>Bitte überprüfen Sie Ihre Anmeldedaten.");
+                AddValidAnimation("Не удалось войти в систему. Пожалуйста, проверьте свои данные для входа.");
                 $("#btnLogin").css("pointer-events", "auto").val("Anmelden");
                 $("#loader").css("visibility", "hidden");
             } else if (result.status == 2) {
-                AddValidAnimation("Sie haben keine Berechtigung für den Zugriff auf dieses System.");
+                AddValidAnimation("У вас нет разрешения на доступ к этой системе.");
                 $("#btnLogin").css("pointer-events", "auto").val("Anmelden");
                 $("#loader").css("visibility", "hidden");
             }
